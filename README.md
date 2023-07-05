@@ -1,9 +1,6 @@
 # Cas Bot
 
 Current To Do:
-- Add support for multiple Twitter feeds. Needs:
-  - Include only Tweets, Retweets, and Quote Retweets. No comments/replies.
-  - Support for commands to add & set up Twitter feeds.
 - Twitch & YouTube livestream pings. Needs:
   - Support for Twitch livestreams.
   - Support for YouTube livestreams.
