@@ -23,8 +23,7 @@ class TwitchListen(commands.Cog):
         self.last_seen_live = False
         
         # twitch and discord channel info 
-        envpath = os.path.abspath(__file__).split('cogs\\twitchlisten.py')[0] + ('.env')
-        load_dotenv(envpath)
+        load_dotenv()
         self.client = os.getenv("TWITCH_CLIENT")
         self.secret = os.getenv("TWITCH_SECRET")
         self.user = os.getenv("TWITCH_USER")
