@@ -28,38 +28,49 @@ class YtListener(commands.Cog):
         self.YT_CHANNEL = os.getenv("YT_CHANNEL_ID")
 
         with open(self.config_path) as json_file: # add path thing
-            self.vod_count = json.load(json_file)['vod_count']
+            config_data = json.load(json_file)
+            self.vod_count = config_data['vod_count']
+            self.channel = bot.get_channel(config_data['yt_text_channel_id'])
         
         self.youtube = build('youtube', 'v3', developerKey=self.API_KEY)
         self.playlist_id = self.youtube.channels().list(part='snippet,contentDetails,statistics,status',id = self.YT_CHANNEL).execute()['items'][0]['contentDetails']['relatedPlaylists']['uploads']
 
-    @app_commands.command(name = "stop_yt_listener", description = "Stops the youtube listener")
-    @app_commands.checks.has_any_role('Staff', 'Admin')
-    async def listen_end(self, interaction: Interaction):
-        response = interaction.response
+    def cog_unload(self):
         try:
             self.yt.cancel()
-            await response.send_message(content='The YT listener has stopped')
         except Exception as e:
-            print(e)
-            await response.send_message(content='The YT listener was not stopped - error')
+            print(f'Stopping the listener failed - error: {e}')
     
-    @app_commands.command(name = "start_yt_listener", description = "Starts the youtube listener")
-    @app_commands.checks.has_any_role('Staff', 'Admin')
-    async def listen_start(self, interaction: Interaction, channel : TextChannel):
-        response = interaction.response
-        self.channel = channel
+    def cog_load(self):
         try:
-            self.yt.cancel()
-            await response.send_message(content='The YT listener has been started')
+            self.yt.start()
         except Exception as e:
-            print(e)
-            await response.send_message(content='The YT listener was not started - error')
+            print(f'Starting the listener failed - error: {e}')
+    
+    @app_commands.command(name = "config_yt_listener", description = "Configures the youtube listener")
+    @app_commands.checks.has_any_role('Staff', 'Admin')
+    async def set_yt_announce(self, interaction: Interaction, channel : TextChannel):
+        self.channel = channel
 
-        self.yt.start()
+        
+
+        with open(str(self.config_path), "r") as outfile:
+            config_data = json.load(outfile)
+                
+        config_data['yt_text_channel_id'] = self.channel.id
+        with open(str(self.config_path), "w")  as outfile:
+            json.dump(config_data, outfile)
+
+        await interaction.response.send_message(content=f'The Youtube Listener has been set to {self.channel}!')
+
+        
+
+
+
+
 
     #checks every 30 seconds if there's been a youtube video published
-    @tasks.loop(seconds=10.0)
+    @tasks.loop(seconds=30.0)
     async def yt(self):
         self.vods()
         for msg in self.msgs:

@@ -24,7 +24,7 @@ def run_discord_bot():
         print(f'{bot.user} is now running')
         bot.tree.clear_commands(guild=None)
         await bot.add_cog(Publish(bot))
-        #await bot.add_cog(TwitchListen(bot))
+        await bot.add_cog(TwitchListen(bot))
         await bot.add_cog(YtListener(bot))
 
         await bot.tree.sync()
