@@ -3,8 +3,10 @@ from discord import app_commands
 from discord import Interaction
 import json
 import os
+from pathlib import Path
 
-config_path = ''.join(os.path.abspath(__file__).split('cogs/publish.py')[0] + ('config_data.json'))
+base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
+config_path = base_path / 'config_data.json'
 
 class Publish(commands.Cog):
     def __init__(self, bot):
