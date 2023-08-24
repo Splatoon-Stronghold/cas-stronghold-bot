@@ -8,7 +8,7 @@ from cogs.yt_listen import YtListener
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD_ID = int(os.getenv('GUID_ID'))
+GUILD_ID = int(os.getenv('GUILD_ID'))
 
 def run_discord_bot():
     # Initializing the intents of the bot
