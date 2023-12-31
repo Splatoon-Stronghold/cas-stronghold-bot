@@ -1,7 +1,10 @@
 # Cas Bot
 
 ## Current To Do:
-- Automation for Replay VODs service. Needs:
+
+- /uptime : Polish output for displaying uptime since bot was last online.
+- /config-twitch : Automation for Twitch livestream pings: add/remove names of channels to send to.
+- /process-replays : Automation for Replay VODs service. Needs:
   - Support for temporarily storing images & videos (large files).
   - Ability to download a video file from a Google Drive share link.
   - Ability to upload said video file to YouTube using information from Discord command.

@@ -47,7 +47,7 @@ class YtListener(commands.Cog):
         except Exception as e:
             print(f'Starting the listener failed - error: {e}')
     
-    @app_commands.command(name = "config_yt_listener", description = "Configures the youtube listener")
+    @app_commands.command(name = "config-youtube", description = "Configures the youtube listener")
     @app_commands.checks.has_any_role('Staff', 'Admin')
     async def set_yt_announce(self, interaction: Interaction, channel : TextChannel):
         self.channel = channel

@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 import json
 from cogs.publish import Publish
 from cogs.twitchlisten import TwitchListen
+from cogs.uptime import Uptime
 from cogs.yt_listen import YtListener
+from init_start_time import start_time_to_json
 
 load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
@@ -26,12 +28,16 @@ def run_discord_bot():
         await bot.add_cog(Publish(bot))
         await bot.add_cog(TwitchListen(bot))
         await bot.add_cog(YtListener(bot))
+        await bot.add_cog(Uptime(bot))
 
-        await bot.tree.sync()
+
+        await bot.tree.sync(guild=discord.Object(id=GUILD_ID))
         print('All commands set up!')
         print(type(GUILD_ID))
         my_guild = bot.get_guild(GUILD_ID)
         print(my_guild)
+
+        await start_time_to_json() # for /uptime
         
         for guild in bot.guilds:
             if guild != my_guild:
