@@ -1,4 +1,6 @@
 .env
+cas-stronghold-bot/cas-bot-api-gdrive.json
+cas-stronghold-bot/cas-bot-api-gsheet.json
 
 
 __pycache__/
