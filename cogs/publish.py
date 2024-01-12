@@ -5,13 +5,14 @@ import json
 import os
 from pathlib import Path
 
-base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-config_path = base_path / 'config_data.json'
-
 class Publish(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        with open(config_path) as json_file: # add path thing
+        
+        base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
+        self.config_path = base_path / 'config_data.json'
+
+        with open(self.config_path) as json_file: # add path thing
             self.config_data = json.load(json_file)
 
 
@@ -47,5 +48,5 @@ class Publish(commands.Cog):
                 await response.send_message(content=f'"{remove}" was not removed from the list of channels to be published. Please check that it is spelled correctly and case sensitive')
             
 
-        with open(config_path, "w") as outfile:
+        with open(self.config_path, "w") as outfile:
             json.dump(self.config_data, outfile)

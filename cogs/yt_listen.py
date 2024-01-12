@@ -8,13 +8,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 from googleapiclient.discovery import build
 
-
-
-
-# these are global variables so that they only run once throughout the loop.
-
-#the cog itself
-
 class YtListener(commands.Cog):
 
     def __init__(self, bot):
@@ -39,13 +32,13 @@ class YtListener(commands.Cog):
         try:
             self.yt.cancel()
         except Exception as e:
-            print(f'Stopping the listener failed - error: {e}')
+            print(f'Stopping the youtube listener failed - error: {e}')
     
     def cog_load(self):
         try:
             self.yt.start()
         except Exception as e:
-            print(f'Starting the listener failed - error: {e}')
+            print(f'Starting the youtube listener failed - error: {e}')
     
     @app_commands.command(name = "config-youtube", description = "Configures the youtube listener")
     @app_commands.checks.has_any_role('Staff', 'Admin')

@@ -1,19 +1,13 @@
 from discord.ext import commands, tasks
 from discord import app_commands
 from discord import Interaction
-import json
-import os
+from discord import TextChannel
 import os
 import requests
 import json
+from pathlib import Path
 from datetime import date
 from dotenv import load_dotenv
-
-
-
-# these are global variables so that they only run once throughout the loop.
-
-#the cog itself
 
 class TwitchListen(commands.Cog):
 
@@ -21,6 +15,15 @@ class TwitchListen(commands.Cog):
         self.bot = bot
         self.is_live = False
         self.last_seen_live = False
+
+        # channels to send to
+        base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
+        self.config_path = base_path / 'config_data.json'
+        with open(self.config_path) as json_file: # add path thing
+            config_data = json.load(json_file)
+            self.channels = config_data['twitch_announcement_channels']
+
+
         
         # twitch and discord channel info 
         load_dotenv()
@@ -31,10 +34,62 @@ class TwitchListen(commands.Cog):
 
 
     def cog_unload(self):
-        self.twitch.cancel()
-
+        try:
+            self.twitch.cancel()
+        except Exception as e:
+            print(f'Stopping the twitch listener failed - error: {e}')
+    
     def cog_load(self):
-        self.twitch.start()
+        try:
+            self.twitch.start()
+        except Exception as e:
+            print(f'Starting the twitch listener failed - error: {e}')
+
+    
+    @app_commands.command(name = "add-twitch-config", description = "Configures the youtube listener")
+    @app_commands.checks.has_any_role('Staff', 'Admin')
+    async def add_twitch_announce(self, interaction: Interaction, channel : TextChannel):
+        # Get channel name
+        # if channel name is new: 
+            # add to list of announce channels & channel IDs internally
+            # write to json file
+            # give confirmation
+        # else:
+            # write error msg to discord channel
+        pass
+
+    @app_commands.command(name = "del-twitch-config", description = "Configures the youtube listener")
+    @app_commands.checks.has_any_role('Staff', 'Admin')
+    async def del_twitch_announce(self, interaction: Interaction, channel : TextChannel):
+        # Get channel name
+        # if channel name is available: 
+            # remove from list of announce channels & channel IDs internally
+            # write to json file
+            # give confirmation
+        # else:
+            # write error msg to discord channel "we dont have that channel"
+
+        
+        pass
+
+
+    ### youtube listener: use as a base.
+    # @app_commands.command(name = "config-youtube", description = "Configures the youtube listener")
+    # @app_commands.checks.has_any_role('Staff', 'Admin')
+    # async def set_yt_announce(self, interaction: Interaction, channel : TextChannel):
+    #     self.channel = channel
+
+        
+
+    #     with open(str(self.config_path), "r") as outfile:
+    #         config_data = json.load(outfile)
+                
+    #     config_data['yt_text_channel_id'] = self.channel.id
+    #     with open(str(self.config_path), "w")  as outfile:
+    #         json.dump(config_data, outfile)
+
+    #     await interaction.response.send_message(content=f'The Youtube Listener has been set to {self.channel}!')
+
 
     #checks every 5 seconds if Twitch is online
     @tasks.loop(seconds=5.0)

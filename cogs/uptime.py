@@ -12,13 +12,14 @@ import time
 import datetime
 
 
-base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-config_path = base_path / 'config_data.json'
 
 class Uptime(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        with open(config_path) as json_file: # add path thing
+        base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
+        self.config_path = base_path / 'config_data.json'
+
+        with open(self.config_path) as json_file: # add path thing
             self.config_data = json.load(json_file)        
 
     @app_commands.command(name = "uptime", description = "Shows duration of time since bot came online")

@@ -1,1 +1,4 @@
-{"announcement_channels": ["announcements", "stream-announcements", "splatoon-news", "competitive-news"], "vod_count": 79, "yt_text_channel_id": 1132053178838421554}
+{"youtube_announcement_channels": ["announcements", "stream-announcements", "splatoon-news", "competitive-news"], 
+"vod_count": 79, 
+"yt_text_channel_id": 1132053178838421554,
+"twitch_announcement_channels": {}}
