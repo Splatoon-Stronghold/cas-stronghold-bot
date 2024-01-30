@@ -99,10 +99,3 @@ def upload_vid(vid_path : Path, thumbnail_path : Path, title : str, description 
 	return f'https://www.youtube.com/watch?v={yt_vid.id}'
 
 
-base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-
-re_path = base_path / 'cogs' / 'videos' 
-
-print(upload_vid(re_path / 'Chem Project #2 V1.mov', re_path / 'IMG_3140.JPG', 'Magneezium', 'amongus chem project', [], 'private', base_path / 'client_secret_387140768965-ioropigtoq3jf7g2lkghb1vl243hq9dc.apps.googleusercontent.com.json'))
-
-
