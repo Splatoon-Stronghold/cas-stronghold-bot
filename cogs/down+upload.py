@@ -57,7 +57,7 @@ def download_vid(link : str, folder_path : Path):
 		os.remove(aud_path)
 		return final_path
 
-def upload_vid(vid_path : Path, thumbnail_path : Path, title : str, description : str, tags : [str], privacy : str, client_secrets_path : Path, login_storage_path : Path):
+def upload_vid(vid_path : Path, thumbnail_path : Path, title : str, description : str, tags : list[str], privacy : str, client_secrets_path : Path, login_storage_path : Path):
 	'''
 	upload_vid - Uploads local videos to YouTube
 	----------
@@ -97,5 +97,4 @@ def upload_vid(vid_path : Path, thumbnail_path : Path, title : str, description 
 	yt_vid = channel.upload_video(vid)
 
 	return f'https://www.youtube.com/watch?v={yt_vid.id}'
-
 
