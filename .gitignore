@@ -6,4 +6,6 @@ client_secret*
 __pycache__/
 *.env
 
+venv
+
 time.json
