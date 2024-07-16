@@ -5,17 +5,13 @@ from discord import TextChannel
 import json
 import os
 from pathlib import Path
+from utils.config import get_config, add_channel, remove_channel
 
 class Publish(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         
-        base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-        self.config_path = base_path / 'config_data.json'
-
-        with open(self.config_path) as json_file: # add path thing
-            self.config_data = json.load(json_file)
-
+        self.publish_channels = get_config('publish_announcement_channels')
 
     @commands.Cog.listener()
     async def on_message(self,message):
@@ -23,7 +19,8 @@ class Publish(commands.Cog):
         channel = str(message.channel)
 
         # Publishes msg if it's one of the channels which should be published
-        if channel in self.config_data['publish_announcement_channels']:
+        # fix the bug in this with using str
+        if channel in self.publish_channels:
             try:
                 await message.publish()
             except Exception as e:
@@ -35,22 +32,19 @@ class Publish(commands.Cog):
     @app_commands.checks.has_any_role('Staff', 'Admin')
     async def config_publisher(self, interaction: Interaction, add: str = None, remove: str = None):
         response = interaction.response
-        if add != None:
-            if add in [channel.name for channel in interaction.guild.channels] and add not in self.config_data['publish_announcement_channels']:
-                self.config_data['publish_announcement_channels'].append(add)
+        if add:
+            if add in [channel.name for channel in interaction.guild.channels]:
+                self.publish_channels = add_channel('publish_announcement_channels', add)
                 await response.send_message(content=f'"{add}" has been added to the list of channels to be published!')
             else:
                 await response.send_message(content=f'"{add}" was not added from the list of channels to be published. Please check that it is spelled correctly and case sensitive')
-        if remove != None:
-            if remove not in self.config_data['publish_announcement_channels']:
+        if remove:
+            if remove not in self.publish_channels:
                 await response.send_message(content=f'"{remove}" was not removed from the list of channels to be published. Please check that it is spelled correctly and case sensitive')
             else:
                 try:
-                    self.config_data['publish_announcement_channels'].remove(remove)
+                    self.publish_channels = remove_channel('publish_announcement_channels', remove)
                     await response.send_message(content=f'"{remove}" has been removed from the list of channels to be published!')
                 except:
                     await response.send_message(content=f'"{remove}" was not removed from the list of channels to be published. Please check that it is spelled correctly and case sensitive')
             
-
-        with open(self.config_path, "w") as outfile:
-            json.dump(self.config_data, outfile)
