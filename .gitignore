@@ -5,3 +5,5 @@ cas-bot-api-gdrive.json
 client_secret*
 __pycache__/
 *.env
+
+time.json
