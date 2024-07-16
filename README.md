@@ -15,14 +15,17 @@ For macOS:
 ```bash
 python3 -m venv ./venv
 source venv/bin/activate # or activate.fish, etc.
-pip install --force-reinstall -v "pip<24.1"
-pip install --upgrade setuptools
-pip install -r requirements.txt
+pip3 install --force-reinstall -v "pip<24.1"
+pip3 install --upgrade setuptools
+pip3 install -r requirements.txt
 ```
 
 ### Run
 
 ```bash
+# Remember to do:
+source venv/bin/activate # or activate.fish, etc.
+
 python3 main.py
 ```
 
