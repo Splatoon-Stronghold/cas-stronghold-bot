@@ -2,17 +2,16 @@ import discord
 import os
 from dotenv import load_dotenv
 import json
+from utils import env
 from cogs.publish import Publish
 from cogs.twitchlisten import TwitchListen
 from cogs.uptime import Uptime
 from cogs.yt_listen import YtListener
 from init_start_time import start_time_to_json
 
-load_dotenv()
-DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD_ID = int(os.getenv('GUILD_ID'))
-
 def run_discord_bot():
+    GUILD_ID = env.get_guild_id()
+
     # Initializing the intents of the bot
     intent = discord.Intents.default()
     intent.message_content = True
@@ -51,5 +50,5 @@ def run_discord_bot():
             await guild.leave()
 
 
-    bot.run(DISCORD_TOKEN)
+    bot.run(env.get_discord_token())
 
