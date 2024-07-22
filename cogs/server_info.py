@@ -1,6 +1,7 @@
 from discord.ext import commands
 from discord import app_commands
 from discord import Interaction
+from utils import env
 
 class ServerInfo(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -8,6 +9,8 @@ class ServerInfo(commands.Cog):
 
     @app_commands.command(name = 'server-info', description = 'Show stats about the server')
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def server_info(self, interaction: Interaction):
         guild = interaction.guild
         response = interaction.response
