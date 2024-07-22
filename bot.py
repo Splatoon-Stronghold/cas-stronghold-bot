@@ -22,19 +22,18 @@ def run_discord_bot():
     # Message when running
     @bot.event
     async def on_ready():
-        print(f'{bot.user} is now running')
-        bot.tree.clear_commands(guild=None)
+        my_guild = bot.get_guild(GUILD_ID)
+        print(f'{bot.user} is now running in {my_guild}')
+
+        bot.tree.clear_commands(guild=my_guild)
         await bot.add_cog(Publish(bot))
         # await bot.add_cog(TwitchListen(bot)) --> if you want to use this, uncomment it
         # await bot.add_cog(YtListener(bot)) --> if you want to use this, uncomment it
         await bot.add_cog(Uptime(bot))
 
 
-        await bot.tree.sync(guild=discord.Object(id=GUILD_ID))
-        print('All commands set up!')
-        print(type(GUILD_ID))
-        my_guild = bot.get_guild(GUILD_ID)
-        print(my_guild)
+        set_up_commands = await bot.tree.sync(guild=my_guild)
+        print(f'Synced {len(set_up_commands)} command(s) to Discord')
 
         await start_time_to_json() # for /uptime
         
