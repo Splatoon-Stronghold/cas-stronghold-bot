@@ -1,6 +1,5 @@
 import discord
-import os
-from dotenv import load_dotenv
+from discord.ext import commands
 import json
 from utils import env
 from cogs.publish import Publish
@@ -15,9 +14,9 @@ def run_discord_bot():
     # Initializing the intents of the bot
     intent = discord.Intents.default()
     intent.message_content = True
-    bot = discord.ext.commands.Bot(command_prefix = '!', intents=intent)
-    
-    
+    bot = commands.Bot(command_prefix = '!', intents=intent)
+
+
     my_guild = None
     # Message when running
     @bot.event
