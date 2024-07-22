@@ -1,7 +1,6 @@
 import sys
 import discord
 from discord.ext import commands
-import json
 from utils import env
 from cogs.publish import Publish
 from cogs.twitchlisten import TwitchListen
