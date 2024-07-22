@@ -26,6 +26,7 @@ def run_discord_bot():
         print(f'{bot.user} is now running in {my_guild}')
 
         bot.tree.clear_commands(guild=my_guild)
+
         await bot.add_cog(Publish(bot))
         # await bot.add_cog(TwitchListen(bot)) --> if you want to use this, uncomment it
         # await bot.add_cog(YtListener(bot)) --> if you want to use this, uncomment it
@@ -42,7 +43,7 @@ def run_discord_bot():
         print(f'Synced {len(set_up_commands)} guild command(s) to Discord')
 
         await start_time_to_json() # for /uptime
-        
+
         for guild in bot.guilds:
             if guild != my_guild:
                 print('Not my guild!')
