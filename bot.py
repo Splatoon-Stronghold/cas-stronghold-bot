@@ -1,3 +1,4 @@
+import sys
 import discord
 from discord.ext import commands
 import json
@@ -30,9 +31,15 @@ def run_discord_bot():
         # await bot.add_cog(YtListener(bot)) --> if you want to use this, uncomment it
         await bot.add_cog(Uptime(bot))
 
+        all_guild_commands = bot.tree.get_commands(guild=my_guild)
+        all_global_commands = bot.tree.get_commands(guild=None)
+        print(f'Configured {len(all_guild_commands)} guild command(s), {len(all_global_commands)} global command(s)')
+        if len(all_global_commands) > 0:
+            print("Do not use global commands! Exiting")
+            sys.exit(1)
 
         set_up_commands = await bot.tree.sync(guild=my_guild)
-        print(f'Synced {len(set_up_commands)} command(s) to Discord')
+        print(f'Synced {len(set_up_commands)} guild command(s) to Discord')
 
         await start_time_to_json() # for /uptime
         
