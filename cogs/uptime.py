@@ -6,7 +6,7 @@ from discord import Interaction
 from discord import TextChannel
 import json
 import os
-from dotenv import load_dotenv
+from utils import env
 from pathlib import Path
 import time
 import datetime
@@ -24,6 +24,8 @@ class Uptime(commands.Cog):
 
     @app_commands.command(name = "uptime", description = "Shows duration of time since bot came online")
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def display_uptime(self, interaction: Interaction):
         basepath = os.path.dirname(__file__)
         filepath = os.path.abspath(os.path.join(basepath, "..", "time.json"))

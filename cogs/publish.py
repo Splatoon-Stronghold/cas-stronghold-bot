@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 from utils.config import get_config, add_channel, remove_channel
+from utils import env
 
 class Publish(commands.Cog):
     def __init__(self, bot):
@@ -30,6 +31,8 @@ class Publish(commands.Cog):
         
     @app_commands.command(name = "config-publisher", description = "Sets the channels to be auto-published")
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def config_publisher(self, interaction: Interaction, add: str = None, remove: str = None):
         response = interaction.response
         if add:

@@ -47,6 +47,8 @@ class TwitchListen(commands.Cog):
     
     @app_commands.command(name = "add-twitch-config", description = "Configures the youtube listener")
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def add_twitch_announce(self, interaction: Interaction, channel : TextChannel):
         # Get channel name
         # if channel name is new: 
@@ -59,6 +61,8 @@ class TwitchListen(commands.Cog):
 
     @app_commands.command(name = "del-twitch-config", description = "Configures the youtube listener")
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def del_twitch_announce(self, interaction: Interaction, channel : TextChannel):
         # Get channel name
         # if channel name is available: 
