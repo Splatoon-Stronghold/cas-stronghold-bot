@@ -9,3 +9,4 @@ __pycache__/
 venv
 
 time.json
+config_data.json
