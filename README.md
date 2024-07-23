@@ -20,6 +20,10 @@ pip3 install --upgrade setuptools
 pip3 install -r requirements.txt
 ```
 
+### Configure files
+
+Use a format similar to the example json storage files, time-example.json and config_data-example. Rename the deployment versions to time.json and config_data.json respectively. 
+
 ### Run
 
 ```bash
