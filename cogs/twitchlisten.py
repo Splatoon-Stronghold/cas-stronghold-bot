@@ -7,7 +7,7 @@ import requests
 import json
 from pathlib import Path
 from datetime import date
-from dotenv import load_dotenv
+from utils import env
 
 class TwitchListen(commands.Cog):
 
@@ -26,11 +26,10 @@ class TwitchListen(commands.Cog):
 
         
         # twitch and discord channel info 
-        load_dotenv()
-        self.client = os.getenv("TWITCH_CLIENT")
-        self.secret = os.getenv("TWITCH_SECRET")
-        self.user = os.getenv("TWITCH_USER")
-        self.channel = int(os.getenv("TWITCH_DISCORD_CHANNEL"))
+        self.client = env.get_twitch_client()
+        self.secret = env.get_twitch_secret()
+        self.user = env.get_twitch_user()
+        self.channel = env.get_twitch_discord_channel()
 
 
     def cog_unload(self):
@@ -48,6 +47,8 @@ class TwitchListen(commands.Cog):
     
     @app_commands.command(name = "add-twitch-config", description = "Configures the youtube listener")
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def add_twitch_announce(self, interaction: Interaction, channel : TextChannel):
         # Get channel name
         # if channel name is new: 
@@ -60,6 +61,8 @@ class TwitchListen(commands.Cog):
 
     @app_commands.command(name = "del-twitch-config", description = "Configures the youtube listener")
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def del_twitch_announce(self, interaction: Interaction, channel : TextChannel):
         # Get channel name
         # if channel name is available: 

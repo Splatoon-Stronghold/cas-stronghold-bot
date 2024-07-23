@@ -4,7 +4,7 @@ from discord import Interaction
 from discord import TextChannel
 import json
 import os
-from dotenv import load_dotenv
+from utils import env
 from pathlib import Path
 from googleapiclient.discovery import build
 
@@ -16,9 +16,9 @@ class YtListener(commands.Cog):
         # twitch and discord channel info 
         base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
         self.config_path = base_path / 'config_data.json'
-        load_dotenv()
-        self.API_KEY = os.getenv("YT_API_KEY")
-        self.YT_CHANNEL = os.getenv("YT_CHANNEL_ID")
+
+        self.API_KEY = env.get_yt_api_key()
+        self.YT_CHANNEL = env.get_yt_channel_id()
 
         with open(self.config_path) as json_file: # add path thing
             config_data = json.load(json_file)
@@ -42,6 +42,8 @@ class YtListener(commands.Cog):
     
     @app_commands.command(name = "config-youtube", description = "Configures the youtube listener")
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def config_youtube(self, interaction: Interaction, channel : TextChannel):
         self.channel = channel
 
