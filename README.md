@@ -1,5 +1,34 @@
 # Cas Bot
 
+## Running
+### Environment variables
+Define in `.env`:
+```ini
+DISCORD_TOKEN=...
+GUILD_ID=...
+```
+
+### Prepare & install dependencies
+
+For macOS:
+
+```bash
+python3 -m venv ./venv
+source venv/bin/activate # or activate.fish, etc.
+pip3 install --force-reinstall -v "pip<24.1"
+pip3 install --upgrade setuptools
+pip3 install -r requirements.txt
+```
+
+### Run
+
+```bash
+# Remember to do:
+source venv/bin/activate # or activate.fish, etc.
+
+python3 main.py
+```
+
 ## Current To Do:
 
 - /uptime : Polish output for displaying uptime since bot was last online.
