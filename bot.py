@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from utils import env
 from cogs.publish import Publish
+from cogs.server_info import ServerInfo
 from cogs.twitchlisten import TwitchListen
 from cogs.uptime import Uptime
 from cogs.yt_listen import YtListener
@@ -30,6 +31,7 @@ def run_discord_bot():
         # await bot.add_cog(TwitchListen(bot)) --> if you want to use this, uncomment it
         # await bot.add_cog(YtListener(bot)) --> if you want to use this, uncomment it
         await bot.add_cog(Uptime(bot))
+        await bot.add_cog(ServerInfo(bot))
 
         all_guild_commands = bot.tree.get_commands(guild=my_guild)
         all_global_commands = bot.tree.get_commands(guild=None)
