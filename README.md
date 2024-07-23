@@ -24,7 +24,7 @@ YT_CHANNEL_ID=...
 
 Copy [`config_data-example.json`](./config_data-example.json), rename it to `config_data.json` and adjust the options as needed.
 
-`time.json` will be created when the bot starts.
+`time.json` will be created automatically when the bot starts.
 
 ### Prepare & install dependencies
 
