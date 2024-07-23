@@ -1,12 +1,19 @@
 # Cas Bot
 
 ## Running
-### Environment variables
+### Configure
+#### Environment variables
 Define in `.env`:
 ```ini
 DISCORD_TOKEN=...
 GUILD_ID=...
 ```
+
+#### Configuration files
+
+Copy [`config_data-example.json`](./config_data-example.json), rename it to `config_data.json` and adjust the options as needed.
+
+`time.json` will be created when the bot starts.
 
 ### Prepare & install dependencies
 
@@ -19,10 +26,6 @@ pip3 install --force-reinstall -v "pip<24.1"
 pip3 install --upgrade setuptools
 pip3 install -r requirements.txt
 ```
-
-### Configure files
-
-Use a format similar to the example json storage files, time-example.json and config_data-example. Rename the deployment versions to time.json and config_data.json respectively. 
 
 ### Run
 
