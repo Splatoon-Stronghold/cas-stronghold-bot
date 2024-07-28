@@ -4,6 +4,7 @@ from discord import Interaction
 from discord import TextChannel
 import json
 import os
+from utils import env
 from pathlib import Path
 from utils.config import get_config, add_channel, remove_channel
 
@@ -14,8 +15,10 @@ class TwitchConfig(commands.Cog):
         self.twitch_announcement_channels = get_config('twitch_announcement_channels')
 
         
-    @app_commands.command(name = "twitch-publisher", description = "Sets the channels to announce twitch livestreams")
+    @app_commands.command(name = "config-twitch-publisher", description = "Sets the channels to announce twitch livestreams")
     @app_commands.checks.has_any_role('Staff', 'Admin')
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
     async def config_twitch(self, interaction: Interaction, add: str = None, remove: str = None):
         '''
         Configures discord channels that announce a twitch livestream.
