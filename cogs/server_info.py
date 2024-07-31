@@ -27,4 +27,4 @@ class ServerInfo(commands.Cog):
                 ephemeral=True
             )
         else:
-            await response.send_message('Failed to get server information.')
+            await response.send_message('Failed to get server information.', ephemeral=True)
