@@ -47,7 +47,6 @@ line-length = 100
 [tool.taskipy.tasks]
 bot = { cmd = "python main.py", help = "Runs the bot" }
 lint = { cmd = "pre-commit run --all-files", help = "Lints project files" }
-precommit = { cmd = "pre-commit install", help = "Installs the pre-commit git hook" }
 format = { cmd = "black --target-version py312 .", help = "Runs the black python formatter" }
 
 [build-system]

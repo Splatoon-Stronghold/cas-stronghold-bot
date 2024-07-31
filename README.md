@@ -37,6 +37,10 @@ Copy [`config_data-example.json`](./config_data-example.json), rename it to `con
   ```bash
   poetry install
   ```
+4. Set up precommit hooks:
+  ```bash
+  poetry run pre-commit install
+  ```
 
 ### Run
 
@@ -52,6 +56,11 @@ For more tasks, see [`pyproject.toml`](./pyproject.toml).
 ```bash
 pipx install pipreqs
 pipreqs .
+```
+
+#### Uninstall pre-commit hooks
+```bash
+poetry run pre-commit uninstall
 ```
 
 ## Current To Do:
