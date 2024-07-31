@@ -7,6 +7,7 @@ license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/Splatoon-Stronghold/cas-stronghold-bot"
 repository = "https://github.com/Splatoon-Stronghold/cas-stronghold-bot"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12.0"
