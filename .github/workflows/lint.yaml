@@ -13,11 +13,11 @@ jobs:
 
     steps:
       - name: Checks out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # 4.1.7
 
       - name: Set up Python 3.12
         id: python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # 5.1.1
         with:
           python-version: "3.12"
 
@@ -27,7 +27,7 @@ jobs:
       # that is a composite of those states.
       # Only when the context is exactly the same, we will restore the cache.
       - name: Restore pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # 4.0.2
         with:
           path: ${{ env.PIP_CACHE_DIR }}
           key: "python-0-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('./pyproject.toml', './poetry.lock') }}"
