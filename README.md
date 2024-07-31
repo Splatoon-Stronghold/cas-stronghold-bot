@@ -41,10 +41,13 @@ pip3 install -r requirements.txt
 ### Run
 
 ```bash
-# Remember to do:
-source venv/bin/activate # or activate.fish, etc.
 
-python3 main.py
+### Misc
+
+#### List actually used dependencies
+```bash
+pipx install pipreqs
+pipreqs .
 ```
 
 ## Current To Do:
