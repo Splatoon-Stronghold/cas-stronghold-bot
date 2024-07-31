@@ -39,10 +39,10 @@ jupyter_core = "^5.7.2"
 
 [tool.isort]
 profile = "black"
-line_length = 100
+line_length = 120
 
 [tool.black]
-line-length = 100
+line-length = 120
 
 [tool.taskipy.tasks]
 bot = { cmd = "python main.py", help = "Runs the bot" }
