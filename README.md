@@ -28,23 +28,27 @@ Copy [`config_data-example.json`](./config_data-example.json), rename it to `con
 
 ### Prepare & install dependencies
 
-For macOS:
-
-```bash
-python3 -m venv ./venv
-source venv/bin/activate # or activate.fish, etc.
-pip3 install --force-reinstall -v "pip<24.1"
-pip3 install --upgrade setuptools
-pip3 install -r requirements.txt
-```
+1. [Install `pipx`](https://pipx.pypa.io/stable/installation/).
+2. [Install `poetry`](https://python-poetry.org/docs/#installation):
+  ```bash
+  pipx install poetry
+  ```
+3. Install dependencies:
+  ```bash
+  poetry install
+  ```
 
 ### Run
 
 ```bash
+poetry run task bot
+```
+
+For more tasks, see [`pyproject.toml`](./pyproject.toml).
 
 ### Misc
 
-#### List actually used dependencies
+#### List actually used direct dependencies
 ```bash
 pipx install pipreqs
 pipreqs .
