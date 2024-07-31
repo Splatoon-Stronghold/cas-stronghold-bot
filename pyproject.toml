@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "app"
+name = "cas-stronghold-bot"
 version = "0.1.0"
-description = "Template Python App"
-authors = ["Your Name Here <yourname@example.com>"]
+description = "Stronghold's general purpose bot packaged with various features to help in Discord server tasks and the automation of other services."
+authors = ["Splatoon Stronghold <splatoonstronghold@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/..."
-repository = "https://github.com/..."
+homepage = "https://github.com/Splatoon-Stronghold/cas-stronghold-bot"
+repository = "https://github.com/Splatoon-Stronghold/cas-stronghold-bot"
 
 [tool.poetry.dependencies]
 python = "^3.12.0"
@@ -115,7 +115,7 @@ line_length = 100
 line-length = 100
 
 [tool.taskipy.tasks]
-app = { cmd = "python -m app", help = "Runs the main package" }
+bot = { cmd = "python main.py", help = "Runs the bot" }
 lint = { cmd = "pre-commit run --all-files", help = "Lints project files" }
 precommit = { cmd = "pre-commit install", help = "Installs the pre-commit git hook" }
 format = { cmd = "black --target-version py312 .", help = "Runs the black python formatter" }
