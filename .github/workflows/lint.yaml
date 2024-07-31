@@ -15,11 +15,11 @@ jobs:
       - name: Checks out repository
         uses: actions/checkout@v2
 
-      - name: Set up Python 3.10
+      - name: Set up Python 3.12
         id: python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       # This step caches our Python dependencies. To make sure we
       # only restore a cache when the dependencies, the python version and
@@ -62,4 +62,4 @@ jobs:
       - name: Run black
         # see flake8's comment above
         if: always() && (steps.pre-commit.outcome == 'success' || steps.pre-commit.outcome == 'failure')
-        run: poetry run black . --check --diff --target-version py310
+        run: poetry run black . --check --diff --target-version py311
