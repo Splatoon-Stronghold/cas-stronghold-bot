@@ -1,12 +1,30 @@
 # Cas Bot
 
 ## Running
-### Environment variables
-Define in `.env`:
+### Configure
+#### Environment variables
+Define the environment variables used in [`utils/env.py`](./utils/env.py) in your environment or `.env` (`.env` takes priority):
 ```ini
+# Discord
 DISCORD_TOKEN=...
 GUILD_ID=...
+
+# Twitch
+TWITCH_CLIENT=...
+TWITCH_SECRET=...
+TWITCH_USER=...
+TWITCH_DISCORD_CHANNEL=...
+
+# YouTube
+YT_API_KEY=...
+YT_CHANNEL_ID=...
 ```
+
+#### Configuration files
+
+Copy [`config_data-example.json`](./config_data-example.json), rename it to `config_data.json` and adjust the options as needed.
+
+`time.json` will be created automatically when the bot starts.
 
 ### Prepare & install dependencies
 
@@ -19,10 +37,6 @@ pip3 install --force-reinstall -v "pip<24.1"
 pip3 install --upgrade setuptools
 pip3 install -r requirements.txt
 ```
-
-### Configure files
-
-Use a format similar to the example json storage files, time-example.json and config_data-example. Rename the deployment versions to time.json and config_data.json respectively. 
 
 ### Run
 
