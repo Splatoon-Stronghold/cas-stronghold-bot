@@ -11,12 +11,7 @@ from utils.start_time import get_uptime
 
 class Uptime(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
-        base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-        self.config_path = base_path / 'config_data.json'
-
-        with open(self.config_path) as json_file: # add path thing
-            self.config_data = json.load(json_file)        
+        self.bot = bot     
 
     @app_commands.command(name = "uptime", description = "Shows duration of time since bot came online")
     @app_commands.checks.has_any_role('Staff', 'Admin')
