@@ -7,7 +7,7 @@ from cogs.server_info import ServerInfo
 from cogs.twitchlisten import TwitchListen
 from cogs.uptime import Uptime
 from cogs.yt_listen import YtListener
-from init_start_time import start_time_to_json
+from utils.start_time import start_time_to_json
 
 def run_discord_bot():
     GUILD_ID = env.get_guild_id()
