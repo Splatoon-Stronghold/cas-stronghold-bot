@@ -26,3 +26,28 @@ async def save_start_time():
         json_file.write(json_object)
         print("Done")
 
+def get_start_time() -> datetime.datetime:
+    '''get_start_time
+    Returns
+    -------
+    data : datetime.datetime
+        The timestamp when the bot was started, saved in time.json.
+    '''
+
+    with open(get_file_path()) as json_file:
+        data = json.load(json_file)
+
+    return datetime.datetime.fromtimestamp(data["start_time"])
+
+def get_uptime() -> float:
+    '''get_uptime
+    Returns
+    -------
+    data : float
+        The time in seconds since the bot was started.
+    '''
+
+    end_time = datetime.datetime.fromtimestamp(time.time())
+    duration = end_time - get_start_time()
+
+    return duration.total_seconds()
