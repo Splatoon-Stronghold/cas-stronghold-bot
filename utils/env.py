@@ -4,6 +4,8 @@ import dotenv
 
 dotenv.load_dotenv()
 
+# TODO: Use here the core.config.ConfigBot class for loading env
+
 def get_env_var(name: str) -> str:
     '''get_env_var
     Parameters
