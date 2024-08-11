@@ -4,16 +4,25 @@ import time
 import datetime
 import json
 
-async def save_start_time():
+def get_file_path() -> str:
+    '''get_file_path
+    Returns
+    -------
+    data : str
+        The file path to time.json.
+    '''
+    
+    base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
+    return base_path / 'time.json'
+
+def save_start_time():
     dict = {
         "start_time": time.time()
     }
 
     json_object = json.dumps(dict, indent = 4)
 
-    base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-    path = base_path / 'time.json'
-    with open(path, "w") as json_file:
+    with open(get_file_path(), "w") as json_file:
         json_file.write(json_object)
 
 def get_start_time() -> datetime.datetime:
@@ -24,9 +33,7 @@ def get_start_time() -> datetime.datetime:
         The timestamp when the bot was started (which is saved in time.json).
     '''
 
-    base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-    path = base_path / 'time.json'
-    with open(path) as json_file:
+    with open(get_file_path()) as json_file:
         data = json.load(json_file)
 
     return datetime.datetime.fromtimestamp(data["start_time"])

@@ -43,7 +43,7 @@ def run_discord_bot():
         set_up_commands = await bot.tree.sync(guild=my_guild)
         print(f'Synced {len(set_up_commands)} guild command(s) to Discord')
 
-        await save_start_time() # for /uptime
+        save_start_time() # for /uptime
 
         for guild in bot.guilds:
             if guild != my_guild:
