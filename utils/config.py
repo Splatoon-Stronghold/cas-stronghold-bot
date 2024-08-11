@@ -3,6 +3,25 @@ from typing import Union
 import os
 import json
 
+from core.config import load_bot_config_from_file, generate_bot_config
+
+try:
+    base_path = (Path(os.path.abspath(__file__)) / '..' / '..').resolve()
+    config_path = base_path / 'config_data.json'
+    config_data = load_bot_config_from_file(config_path.__str__()).get_store_json()
+except FileNotFoundError as fe:
+    print(fe)
+    print("BotConfig error: config_data.json file not found, generating new instance")
+    config_data = generate_bot_config({
+            "youtube_announcement_channels": ["announcements"],
+            "vod_count": 0,  # If the file does not exists evaluate getting this value from a DB
+            "yt_text_channel_id": 1132053178838421554,
+            "twitch_announcement_channels": {},
+            "publish_announcement_channels": ["announcements"]
+        }
+    ).get_store_json()
+
+
 def get_config(key : str) -> Union[str, list]:
     '''get_config
     Parameters
@@ -15,16 +34,18 @@ def get_config(key : str) -> Union[str, list]:
         The data from config_data.json.
     '''
 
-    base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-    config_path = base_path / 'config_data.json'
-    with open(config_path) as json_file: # add path thing
-        config_data = json.load(json_file)
+    # TODO: We obtain the data from BotConfig
+    # base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
+    # config_path = base_path / 'config_data.json'
+    # with open(config_path) as json_file: # add path thing
+    #     config_data = json.load(json_file)
     
     try:
         data = config_data[key]
     except:
         raise KeyError(f'Key ({key}) not found in config_data.json')
     return data
+
 
 def update_config(key : str, data : Union[str, list]) -> Union[str, list]:
     '''update_config

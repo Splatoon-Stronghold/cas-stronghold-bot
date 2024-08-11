@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from typing import List, Dict, Any
+from pathlib import Path
+from typing import List, Dict, Any, Union
 
 import attr
 
@@ -82,7 +83,7 @@ def generate_bot_config(config_data: Dict[str, Any] = None) -> BotConfig:
     publish_channels = config_data.get("publish_announcement_channels", [])
     twitch_channels = config_data.get("twitch_announcement_channels", {})
     vod_count = config_data.get("vod_count", 0)
-    youtube_text_channel_id = config_data.get("yt_text_channel_id", None)
+    youtube_text_channel_id = config_data.get("yt_text_channel_id", 0)
     return BotConfig.factory(
         youtube_channels=youtube_channels,
         twitch_channels=twitch_channels,
@@ -92,7 +93,7 @@ def generate_bot_config(config_data: Dict[str, Any] = None) -> BotConfig:
     )
 
 
-def load_bot_config_from_file(file_path: str) -> BotConfig:
+def load_bot_config_from_file(file_path: Union[str | Path]) -> BotConfig:
     """
     This function will read a JSON file from path (relative or absolute)
     and return a pre-filled BotConfig instance
