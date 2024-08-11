@@ -1,13 +1,8 @@
-import discord
-
-from discord.ext import commands, tasks
+from discord.ext import commands
 from discord import app_commands
 from discord import Interaction
-from discord import TextChannel
 from utils import env
 from utils.start_time import get_uptime
-
-
 
 class Uptime(commands.Cog):
     def __init__(self, bot):
