@@ -7,7 +7,7 @@ from cogs.server_info import ServerInfo
 from cogs.twitchlisten import TwitchListen
 from cogs.uptime import Uptime
 from cogs.yt_listen import YtListener
-from init_start_time import start_time_to_json
+from utils.start_time import save_start_time
 
 def run_discord_bot():
     GUILD_ID = env.get_guild_id()
@@ -43,7 +43,7 @@ def run_discord_bot():
         set_up_commands = await bot.tree.sync(guild=my_guild)
         print(f'Synced {len(set_up_commands)} guild command(s) to Discord')
 
-        await start_time_to_json() # for /uptime
+        save_start_time() # for /uptime
 
         for guild in bot.guilds:
             if guild != my_guild:
