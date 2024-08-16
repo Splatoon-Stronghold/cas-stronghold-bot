@@ -4,7 +4,8 @@ from discord.ext import commands
 from utils import env
 from cogs.publish import Publish
 from cogs.server_info import ServerInfo
-from cogs.twitchlisten import TwitchListen
+from cogs.twitch_listen import TwitchListen
+from cogs.twitch_config import TwitchConfig
 from cogs.uptime import Uptime
 from cogs.yt_listen import YtListener
 from utils.start_time import save_start_time
@@ -28,7 +29,8 @@ def run_discord_bot():
         bot.tree.clear_commands(guild=my_guild)
 
         await bot.add_cog(Publish(bot))
-        # await bot.add_cog(TwitchListen(bot)) --> if you want to use this, uncomment it
+        await bot.add_cog(TwitchListen(bot))
+        await bot.add_cog(TwitchConfig(bot))
         # await bot.add_cog(YtListener(bot)) --> if you want to use this, uncomment it
         await bot.add_cog(Uptime(bot))
         await bot.add_cog(ServerInfo(bot))
