@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from datetime import date
 from dotenv import load_dotenv
+from utils.env import get_twitch_client, get_twitch_secret, get_twitch_user
 from utils.config import get_config
 from utils.twitch_online import is_twitch_online
 from utils.channel_data import get_channel_from_name
@@ -16,12 +17,6 @@ class TwitchListen(commands.Cog):
         self.bot = bot
         self.is_live = False
         self.last_seen_live = False
-
-        # twitch channel info
-        load_dotenv()
-        self.client = os.getenv("TWITCH_CLIENT")
-        self.secret = os.getenv("TWITCH_SECRET")
-        self.user = os.getenv("TWITCH_USER")
 
     def cog_unload(self):
         try:
@@ -51,7 +46,7 @@ class TwitchListen(commands.Cog):
         ----------
             None, but sends message in each discord channel when live.
         '''
-        self.is_live = is_twitch_online(self.client, self.secret, self.user)
+        self.is_live = is_twitch_online(get_twitch_client(), get_twitch_secret(), get_twitch_user())
 
         #send message only if currently live and not previously
         if self.is_live:
