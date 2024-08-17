@@ -22,17 +22,9 @@ def is_twitch_online(client, secret, user):
     '''
     try:
         
-        #twitch api parameters
-        TWITCHCLIENT_ID = client
-        TWITCHSECRET = secret
-
-        #twitch username, e.g. https://twitch.tv/Kiver would be Kiver
-        USERSTREAM = user
-
-
         # URL to request OAuth Token
-        tokenurl = 'https://id.twitch.tv/oauth2/token?client_id=' + TWITCHCLIENT_ID + \
-                   '&client_secret=' + TWITCHSECRET+'&grant_type=client_credentials'
+        tokenurl = 'https://id.twitch.tv/oauth2/token?client_id=' + client + \
+                   '&client_secret=' + secret +'&grant_type=client_credentials'
 
 
         response = requests.post(tokenurl)
@@ -41,8 +33,8 @@ def is_twitch_online(client, secret, user):
 
         # Connection to Twitch
         connection_response = requests.get('https://api.twitch.tv/helix/streams?user_login=' + \
-                   USERSTREAM, headers={'Authorization': 'Bearer ' + \
-                   OAuth_Token,'Client-Id': TWITCHCLIENT_ID})
+                   user, headers={'Authorization': 'Bearer ' + \
+                   OAuth_Token,'Client-Id': client})
         var=json.loads(connection_response.content)
 
         if(var['data']):
