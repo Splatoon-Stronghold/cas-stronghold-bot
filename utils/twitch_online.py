@@ -45,7 +45,6 @@ def is_twitch_online(client, secret, user):
                    OAuth_Token,'Client-Id': TWITCHCLIENT_ID})
         var=json.loads(connection_response.content)
 
-        # print(var['data'])
         if(var['data']):
             return True
         else:
