@@ -29,12 +29,12 @@ def is_twitch_online(client, secret, user):
 
         response = requests.post(tokenurl)
         response.raise_for_status()
-        OAuth_Token = response.json()["access_token"]
+        oauth_token = response.json()["access_token"]
 
         # Connection to Twitch
         connection_response = requests.get('https://api.twitch.tv/helix/streams?user_login=' + \
                    user, headers={'Authorization': 'Bearer ' + \
-                   OAuth_Token,'Client-Id': client})
+                   oauth_token,'Client-Id': client})
         var=json.loads(connection_response.content)
 
         if(var['data']):
