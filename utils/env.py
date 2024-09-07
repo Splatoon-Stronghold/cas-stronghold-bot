@@ -45,9 +45,6 @@ def get_twitch_secret() -> str:
 def get_twitch_user() -> str:
     return get_env_var("TWITCH_USER")
 
-def get_twitch_discord_channel() -> int:
-    return int(get_env_var("TWITCH_DISCORD_CHANNEL"))
-
 # YouTube
 
 def get_yt_api_key() -> str:

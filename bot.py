@@ -4,18 +4,23 @@ from discord.ext import commands
 from utils import env
 from cogs.publish import Publish
 from cogs.server_info import ServerInfo
-from cogs.twitchlisten import TwitchListen
+from cogs.twitch_listen import TwitchListen
+from cogs.twitch_config import TwitchConfig
 from cogs.uptime import Uptime
 from cogs.yt_listen import YtListener
-from init_start_time import start_time_to_json
+from cogs.logging import Logging
+from utils.start_time import save_start_time
 
 def run_discord_bot():
     GUILD_ID = env.get_guild_id()
 
     # Initializing the intents of the bot
-    intent = discord.Intents.default()
-    intent.message_content = True
-    bot = commands.Bot(command_prefix = '!', intents=intent)
+    intents = discord.Intents.default()
+    intents.message_content = True # for publish
+    intents.messages = True # for logging
+    intents.moderation = True # for logging
+    intents.members = True # for logging
+    bot = commands.Bot(command_prefix = '!', intents=intents)
 
 
     my_guild = None
@@ -28,10 +33,12 @@ def run_discord_bot():
         bot.tree.clear_commands(guild=my_guild)
 
         await bot.add_cog(Publish(bot))
-        # await bot.add_cog(TwitchListen(bot)) --> if you want to use this, uncomment it
+        await bot.add_cog(TwitchListen(bot))
+        await bot.add_cog(TwitchConfig(bot))
         # await bot.add_cog(YtListener(bot)) --> if you want to use this, uncomment it
         await bot.add_cog(Uptime(bot))
         await bot.add_cog(ServerInfo(bot))
+        await bot.add_cog(Logging(bot))
 
         all_guild_commands = bot.tree.get_commands(guild=my_guild)
         all_global_commands = bot.tree.get_commands(guild=None)
@@ -43,7 +50,7 @@ def run_discord_bot():
         set_up_commands = await bot.tree.sync(guild=my_guild)
         print(f'Synced {len(set_up_commands)} guild command(s) to Discord')
 
-        await start_time_to_json() # for /uptime
+        save_start_time() # for /uptime
 
         for guild in bot.guilds:
             if guild != my_guild:
