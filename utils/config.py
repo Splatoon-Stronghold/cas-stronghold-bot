@@ -3,7 +3,7 @@ from typing import Union
 import os
 import json
 
-from core.config import load_bot_config_from_file, generate_bot_config
+from core.config import load_bot_config_from_file, get_bot_config
 
 try:
     base_path = (Path(os.path.abspath(__file__)) / '..' / '..').resolve()
@@ -12,14 +12,7 @@ try:
 except FileNotFoundError as fe:
     print(fe)
     print("BotConfig error: config_data.json file not found, generating new instance")
-    config_data = generate_bot_config({
-            "youtube_announcement_channels": ["announcements"],
-            "vod_count": 0,  # If the file does not exists evaluate getting this value from a DB
-            "yt_text_channel_id": 1132053178838421554,
-            "twitch_announcement_channels": {},
-            "publish_announcement_channels": ["announcements"]
-        }
-    ).get_store_json()
+    config_data = get_bot_config().get_store_json()
 
 
 def get_config(key : str) -> Union[str, list]:
