@@ -17,7 +17,7 @@ from utils.start_time import save_start_time
 
 
 def get_guild(bot_ins):
-    _bot_id = int(os.getenv('force_guild', '0'))
+    _bot_id = env.get_force_guild_id()
     my_guild = bot_ins.get_guild(_bot_id)
     if not my_guild:
         my_guild = bot_ins.get_guild(env.get_guild_id())
@@ -53,10 +53,9 @@ def run_discord_bot():
         await bot.add_cog(Uptime(bot))
         await bot.add_cog(ServerInfo(bot))
         await bot.add_cog(Logging(bot))
-        # Uncomment for using ConfigData COG
-        # await bot.add_cog(ConfigData(bot, bot_config=get_bot_config(
-        #     file_path=os.getenv('BOT_CONFIG_PATH')
-        # )))
+        await bot.add_cog(ConfigData(bot, bot_config=get_bot_config(
+            file_path=env.get_bot_config_path()
+        )))
 
         all_guild_commands = bot.tree.get_commands(guild=my_guild)
         all_global_commands = bot.tree.get_commands(guild=None)

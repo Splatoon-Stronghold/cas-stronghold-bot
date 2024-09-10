@@ -34,6 +34,11 @@ def get_discord_token() -> str:
 def get_guild_id() -> int:
     return int(get_env_var('GUILD_ID'))
 
+def get_force_guild_id() -> int:
+    return int(get_env_var('FORCE_GUILD_ID'))
+
+def get_bot_config_path() -> str:
+    return get_env_var('BOT_CONFIG_PATH')
 # Twitch
 
 def get_twitch_client() -> str:
