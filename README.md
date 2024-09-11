@@ -5,6 +5,9 @@
 #### Environment variables
 Define the environment variables used in [`utils/env.py`](./utils/env.py) in your environment or `.env` (`.env` takes priority):
 ```ini
+# For loading config file, not required
+BOT_CONFIG_PATH=...
+
 # Discord
 DISCORD_TOKEN=...
 GUILD_ID=...
@@ -38,6 +41,11 @@ pip3 install -r requirements.txt
 ```
 
 ### Run
+
+For overriding the .env guild you can set FORCE_GUILD_ID value
+```bash
+export FORCE_GUILD_ID="YOUR_TARGET_GUILD_ID"
+```
 
 ```bash
 # Remember to do:
