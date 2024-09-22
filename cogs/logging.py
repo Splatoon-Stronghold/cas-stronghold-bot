@@ -11,7 +11,16 @@ from utils import env
 class Logging(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.logging_channel = env.get_logging_channel_name()
+
+        # Set up logging_channels as a dictionary for {guild:channel ID} pairs
+        logging_channel_name = env.get_logging_channel_name()
+        self.logging_channels = {}
+
+        for guild in bot.guilds:
+            for channel in guild.channels:
+                if channel.name == logging_channel_name:
+                    self.logging_channels[guild.id] = channel
+
 
     # TODO implement name change
     @commands.Cog.listener()
@@ -22,7 +31,14 @@ class Logging(commands.Cog):
     # TODO implement member banning
     @commands.Cog.listener()
     async def on_member_ban(self,guild,user):
-        pass
+        channel = self.logging_channels[guild.id]
+        
+        await channel.send(
+                    content=
+                        f"# Member banned\n"
+                        f"**Member:** `{user.id}` <@{user.id}>\n"
+                        
+                    )
     
 
     # TODO implement member mute
