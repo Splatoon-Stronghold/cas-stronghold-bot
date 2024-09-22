@@ -11,7 +11,7 @@ from utils import env
 class Logging(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.logging_channel = env.get_logging_channel_id()
+        self.logging_channel = env.get_logging_channel_name()
 
     # TODO implement name change
     @commands.Cog.listener()
