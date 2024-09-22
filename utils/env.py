@@ -52,3 +52,7 @@ def get_yt_api_key() -> str:
 
 def get_yt_channel_id() -> str:
     return get_env_var("YT_CHANNEL_ID")
+
+# Logging channel
+def get_logging_channel_name() -> str:
+    return get_env_var("LOGGING_CHANNEL_NAME")
