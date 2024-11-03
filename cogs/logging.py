@@ -54,13 +54,60 @@ class Logging(commands.Cog):
     # TODO implement edit messages
     @commands.Cog.listener()
     async def on_message_edit(self,before,after):
-        pass
+        guild_id = before.guild.id
+        channel = self.logging_channels[guild_id]
+
+        before_string = ("**Before:**" if len(before.content) <= 750
+                        else "**Before:** (Trimmed at 750)")
+        after_string = ("**After:**" if len(after.content) <= 750
+                        else "**After:** (Trimmed at 750)")
+
+        payload = (f"# Message edited\n"
+                        f"**Member:** `{before.author.id}` <@{before.author.id}>\n"
+                        f"{before_string} `{before.content[:750]}`\n"
+                        f"{after_string} `{after.content[:750]}`")
+        
+        await channel.send(
+                    content=payload   
+                    )
 
 
     # TODO implement purge messages
     @commands.Cog.listener()
     async def on_raw_bulk_message_delete(self, payload):
-        pass
+        '''
+        Need a way to purge messages before this is fully implemented.
+
+        DISCORD_CHARACTER_LIMIT = 2000
+
+        deleted_channel = list(payload)[0].channel_id
+
+        sending_channel = self.logging_channels[deleted_channel.guild.id]
+
+
+        final_message = ""
+        final_message += "# Message Purge\n"
+        final_message += f"**Number of messages:** {len(payload)}\n"
+        final_message += f"**Channel:** {deleted_channel}\n"
+
+        final_message += "\n"
+
+        for msg in payload:
+            # person: message [with no code formatting]
+            final_message += f"<@{msg.author.id}>: {msg.content.replace("```", "‵‵‵")}"
+            final_message += "\n"
+
+            if(len(final_message) >= DISCORD_CHARACTER_LIMIT):
+                final_message = final_message[:DISCORD_CHARACTER_LIMIT - 3]
+                final_message += "..."
+                break
+
+
+        await sending_channel.send(
+            content=final_message   
+            )
+        '''
+
 
 
     # TODO implement member joining
