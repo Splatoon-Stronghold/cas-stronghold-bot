@@ -12,7 +12,7 @@ class Logging(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        # Set up logging_channels as a dictionary for {guild:channel ID} pairs
+        # Set up logging_channels as a dictionary for {guild id:channel} pairs
         logging_channel_name = env.get_logging_channel_name()
         self.logging_channels = {}
 
