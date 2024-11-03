@@ -64,8 +64,8 @@ class Logging(commands.Cog):
 
         payload = (f"# Message edited\n"
                         f"**Member:** `{before.author.id}` <@{before.author.id}>\n"
-                        f"{before_string} `{before.content[:750]}`\n"
-                        f"{after_string} `{after.content[:750]}`")
+                        f"{before_string} ```{before.content[:750]}```\n"
+                        f"{after_string} ```{after.content[:750]}```")
         
         await channel.send(
                     content=payload   
