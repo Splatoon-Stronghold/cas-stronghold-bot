@@ -55,7 +55,7 @@ class Logging(commands.Cog):
                         f"**Member:** `{before.id}` <@{before.id}>\n"
                         f"**Until:** <t:{int(after.timed_out_until.timestamp())}:F>",
                     allowed_mentions=AllowedMentions(
-                        users=[Object(id=after.id)]
+                        users=[Object(id=before.id)]
                     )
                 )
             elif after.timed_out_until is None:
@@ -65,7 +65,7 @@ class Logging(commands.Cog):
                         f"**Member:** `{before.id}` <@{before.id}>\n"
                         f"**Was timed out until:** <t:{int(before.timed_out_until.timestamp())}:F>",
                     allowed_mentions=AllowedMentions(
-                        users=[Object(id=after.id)]
+                        users=[Object(id=before.id)]
                     )
                 )
             else: # Not sure if this can happen
@@ -76,7 +76,7 @@ class Logging(commands.Cog):
                         f"**Was timed out until:** <t:{int(before.timed_out_until.timestamp())}:F>"
                         f"**Now timed out until:** <t:{int(after.timed_out_until.timestamp())}:F>",
                     allowed_mentions=AllowedMentions(
-                        users=[Object(id=after.id)]
+                        users=[Object(id=before.id)]
                     )
                 )
 
