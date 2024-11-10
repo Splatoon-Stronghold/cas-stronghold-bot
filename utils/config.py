@@ -2,6 +2,12 @@ from pathlib import Path
 from typing import Union
 import os
 import json
+from utils import env
+from core.config import get_bot_config
+
+config_data = get_bot_config(
+    file_path=env.get_bot_config_path()
+).get_store_json()
 
 def get_config(key : str) -> Union[str, list]:
     '''get_config
@@ -14,11 +20,6 @@ def get_config(key : str) -> Union[str, list]:
     data : str or list
         The data from config_data.json.
     '''
-
-    base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
-    config_path = base_path / 'config_data.json'
-    with open(config_path) as json_file: # add path thing
-        config_data = json.load(json_file)
     
     try:
         data = config_data[key]
@@ -26,7 +27,8 @@ def get_config(key : str) -> Union[str, list]:
         raise KeyError(f'Key ({key}) not found in config_data.json')
     return data
 
-def update_config(key : str, data : Union[str, list]) -> Union[str, list]:
+
+def update_config(key : str, data : Union[str, list], output_file: str = None) -> Union[str, list]:
     '''update_config
     Parameters
     ----------
@@ -34,6 +36,8 @@ def update_config(key : str, data : Union[str, list]) -> Union[str, list]:
         The key to change the desired data from config_data.json
     data : str or list
         The information to replace the current contents of the key in config_data.json
+    output_file: str
+        Path where the dict will be stored
     Returns
     -------
     data : str or list
@@ -41,9 +45,7 @@ def update_config(key : str, data : Union[str, list]) -> Union[str, list]:
     '''
     base_path = (Path(os.path.abspath(__file__)) /'..' /'..').resolve()
     config_path = base_path / 'config_data.json'
-    with open(config_path) as json_file: # add path thing
-        config_data = json.load(json_file)
-    
+
     try:
         config_data[key] = data
     except:
