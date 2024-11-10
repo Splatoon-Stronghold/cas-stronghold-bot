@@ -103,7 +103,7 @@ class Logging(commands.Cog):
         # Create list of flag names only for flags that are True
         flags = [flag for flag in all_flags if getattr(message.flags, flag)]
 
-        # Create text listing all of the flags
+        # Create text listing the True flags
         flags_notice = ""
         if len(flags) > 0:
             flags_notice = f" ({', '.join(flags)})"
