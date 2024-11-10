@@ -2,6 +2,8 @@ from discord.ext import commands
 from discord import app_commands
 from discord import Interaction
 from discord import TextChannel
+from discord import AllowedMentions
+from discord import Object
 import json
 import os
 from pathlib import Path
@@ -41,15 +43,86 @@ class Logging(commands.Cog):
                     )
     
 
-    # TODO implement member mute
     @commands.Cog.listener()
     async def on_member_update(self,before,after):
-        pass
+        channel = self.logging_channels[before.guild.id]
 
-    # TODO implement delete messages
+        if before.timed_out_until != after.timed_out_until:
+            if before.timed_out_until is None:
+                await channel.send(
+                    content=
+                        f"# Member timed out\n"
+                        f"**Member:** `{before.id}` <@{before.id}>\n"
+                        f"**Until:** <t:{int(after.timed_out_until.timestamp())}:F>",
+                    allowed_mentions=AllowedMentions(
+                        users=[Object(id=before.id)]
+                    )
+                )
+            elif after.timed_out_until is None:
+                await channel.send(
+                    content=
+                        f"# Member timeout removed\n"
+                        f"**Member:** `{before.id}` <@{before.id}>\n"
+                        f"**Was timed out until:** <t:{int(before.timed_out_until.timestamp())}:F>",
+                    allowed_mentions=AllowedMentions(
+                        users=[Object(id=before.id)]
+                    )
+                )
+            else: # Not sure if this can happen
+                await channel.send(
+                    content=
+                        f"# Member timeout changed\n"
+                        f"**Member:** `{before.id}` <@{before.id}>\n"
+                        f"**Was timed out until:** <t:{int(before.timed_out_until.timestamp())}:F>"
+                        f"**Now timed out until:** <t:{int(after.timed_out_until.timestamp())}:F>",
+                    allowed_mentions=AllowedMentions(
+                        users=[Object(id=before.id)]
+                    )
+                )
+
+
     @commands.Cog.listener()
     async def on_message_delete(self,message):
-        pass
+        channel = self.logging_channels[message.guild.id]
+
+        # Do not log deletions in the logging channel itself
+        if message.channel.id == channel.id:
+            return
+        
+        content_notice = ""
+
+        # Replacing with U+2035 REVERSED PRIME
+        sanitized_content = message.content.replace("```", "‵‵‵") 
+        character_limit = 1500
+        if len(sanitized_content) > character_limit:
+            sanitized_content = sanitized_content[:character_limit]
+            content_notice += f" (trimmed at {character_limit})"
+
+        # There is a "silent" alias for "suppress_notifications", keeping only "silent" to not log duplicate information
+        all_flags = filter(lambda flag_name: flag_name != 'suppress_notifications', message.flags.VALID_FLAGS)
+        # Create list of flag names only for flags that are True
+        flags = [flag for flag in all_flags if getattr(message.flags, flag)]
+
+        # Create text listing the True flags
+        flags_notice = ""
+        if len(flags) > 0:
+            flags_notice = f" ({', '.join(flags)})"
+
+        # TODO: attachments? reactions? other metadata?
+
+        await channel.send(
+            content=
+                f"# Message deleted\n"
+                f"**Message:** `{message.id}` https://discord.com/channels/{message.guild.id}/{message.channel.id}/{message.id}{flags_notice}\n"
+                f"**Author:** `{message.author.id}` <@{message.author.id}>\n"
+                f"**Content:** {len(message.content)} characters{content_notice}\n"
+                f"```"
+                f"{sanitized_content}"
+                f"```",
+            allowed_mentions=AllowedMentions(
+                users=[Object(id=message.author.id)]
+            )
+        )
 
     # TODO implement edit messages
     @commands.Cog.listener()
