@@ -12,6 +12,16 @@ class Logging(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+        # Set up logging_channels as a dictionary for {guild id:channel} pairs
+        logging_channel_name = env.get_logging_channel_name()
+        self.logging_channels = {}
+
+        for guild in bot.guilds:
+            for channel in guild.channels:
+                if channel.name == logging_channel_name:
+                    self.logging_channels[guild.id] = channel
+
+
     # TODO implement name change
     @commands.Cog.listener()
     async def on_user_update(self,before,after):
@@ -21,7 +31,14 @@ class Logging(commands.Cog):
     # TODO implement member banning
     @commands.Cog.listener()
     async def on_member_ban(self,guild,user):
-        pass
+        channel = self.logging_channels[guild.id]
+        
+        await channel.send(
+                    content=
+                        f"# Member banned\n"
+                        f"**Member:** `{user.id}` <@{user.id}>\n"
+                        
+                    )
     
 
     # TODO implement member mute
@@ -37,13 +54,64 @@ class Logging(commands.Cog):
     # TODO implement edit messages
     @commands.Cog.listener()
     async def on_message_edit(self,before,after):
-        pass
+        guild_id = before.guild.id
+        channel = self.logging_channels[guild_id]
+
+        before_string = ("**Before:**" if len(before.content) <= 750
+                        else "**Before:** (Trimmed at 750)")
+        after_string = ("**After:**" if len(after.content) <= 750
+                        else "**After:** (Trimmed at 750)")
+
+        before_sanitized_content = before.content[:750].replace("```", "‵‵‵") 
+        after_sanitized_content = after.content[:750].replace("```", "‵‵‵") 
+
+
+        payload = (f"# Message edited\n"
+                        f"**Member:** `{before.author.id}` <@{before.author.id}>\n"
+                        f"{before_string} ```{before_sanitized_content}```\n"
+                        f"{after_string} ```{after_sanitized_content}```")
+        
+        await channel.send(
+                    content=payload   
+                    )
 
 
     # TODO implement purge messages
     @commands.Cog.listener()
     async def on_raw_bulk_message_delete(self, payload):
-        pass
+        '''
+        Need a way to purge messages before this is fully implemented.
+
+        DISCORD_CHARACTER_LIMIT = 2000
+
+        deleted_channel = list(payload)[0].channel_id
+
+        sending_channel = self.logging_channels[deleted_channel.guild.id]
+
+
+        final_message = ""
+        final_message += "# Message Purge\n"
+        final_message += f"**Number of messages:** {len(payload)}\n"
+        final_message += f"**Channel:** {deleted_channel}\n"
+
+        final_message += "\n"
+
+        for msg in payload:
+            # person: message [with no code formatting]
+            final_message += f"<@{msg.author.id}>: {msg.content.replace("```", "‵‵‵")}"
+            final_message += "\n"
+
+            if(len(final_message) >= DISCORD_CHARACTER_LIMIT):
+                final_message = final_message[:DISCORD_CHARACTER_LIMIT - 3]
+                final_message += "..."
+                break
+
+
+        await sending_channel.send(
+            content=final_message   
+            )
+        '''
+
 
 
     # TODO implement member joining
