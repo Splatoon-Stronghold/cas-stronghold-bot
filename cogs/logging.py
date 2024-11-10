@@ -98,19 +98,22 @@ class Logging(commands.Cog):
             sanitized_content = sanitized_content[:character_limit]
             content_notice += f" (trimmed at {character_limit})"
 
-        # suppress_notifications renamed to silent
-        flag_names =  filter(lambda flag_name: flag_name != 'suppress_notifications', message.flags.VALID_FLAGS)
-        types = [flag_name for flag_name in flag_names if getattr(message.flags, flag_name)]
-        type_notice = ""
-        if len(types) > 0:
-            type_notice = f" ({', '.join(types)})"
+        # There is a "silent" alias for "suppress_notifications", keeping only "silent" to not log duplicate information
+        all_flags = filter(lambda flag_name: flag_name != 'suppress_notifications', message.flags.VALID_FLAGS)
+        # Create list of flag names only for flags that are True
+        flags = [flag for flag in all_flags if getattr(message.flags, flag)]
+
+        # Create text listing all of the flags
+        flags_notice = ""
+        if len(flags) > 0:
+            flags_notice = f" ({', '.join(flags)})"
 
         # TODO: attachments? reactions? other metadata?
 
         await channel.send(
             content=
                 f"# Message deleted\n"
-                f"**Message:** `{message.id}` https://discord.com/channels/{message.guild.id}/{message.channel.id}/{message.id}{type_notice}\n"
+                f"**Message:** `{message.id}` https://discord.com/channels/{message.guild.id}/{message.channel.id}/{message.id}{flags_notice}\n"
                 f"**Author:** `{message.author.id}` <@{message.author.id}>\n"
                 f"**Content:** {len(message.content)} characters{content_notice}\n"
                 f"```"
