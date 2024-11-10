@@ -98,31 +98,9 @@ class Logging(commands.Cog):
             sanitized_content = sanitized_content[:character_limit]
             content_notice += f" (trimmed at {character_limit})"
 
-        types = []
-        if message.flags.crossposted:
-            types.append("crossposted")
-        if message.flags.is_crossposted:
-            types.append("is_crossposted")
-        if message.flags.source_message_deleted:
-            types.append("source_message_deleted")
-        if message.flags.suppress_embeds:
-            types.append("suppress_embeds")
-        if message.flags.urgent: # shouldn't happen?
-            types.append("urgent")
-        if message.flags.has_thread:
-            types.append("has_thread")
-        if message.flags.ephemeral: # shouldn't happen?
-            types.append("ephemeral")
-        if message.flags.loading: # shouldn't happen?
-            types.append("loading")
-        if message.flags.failed_to_mention_some_roles_in_thread:
-            types.append("failed_to_mention_some_roles_in_thread")
-        if message.flags.silent:
-            types.append("silent")
-        # Needs discord.py >= 2.3
-        # if message.flags.voice:
-        #     types.append("voice")
-
+        # suppress_notifications renamed to silent
+        flag_names =  filter(lambda flag_name: flag_name != 'suppress_notifications', message.flags.VALID_FLAGS)
+        types = [flag_name for flag_name in flag_names if getattr(message.flags, flag_name)]
         type_notice = ""
         if len(types) > 0:
             type_notice = f" ({', '.join(types)})"
