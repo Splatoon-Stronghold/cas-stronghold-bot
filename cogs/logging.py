@@ -124,7 +124,6 @@ class Logging(commands.Cog):
             )
         )
 
-    # TODO implement edit messages
     @commands.Cog.listener()
     async def on_message_edit(self,before,after):
         guild_id = before.guild.id
@@ -149,41 +148,55 @@ class Logging(commands.Cog):
                     )
 
 
-    # TODO implement purge messages
     @commands.Cog.listener()
     async def on_raw_bulk_message_delete(self, payload):
-        '''
-        Need a way to purge messages before this is fully implemented.
-
         DISCORD_CHARACTER_LIMIT = 2000
+        EACH_MESSAGE_LIMIT = 100
 
-        deleted_channel = list(payload)[0].channel_id
+        deleted_channel = list(payload.cached_messages)[0].channel
+        deleted_guild_id = deleted_channel.guild.id
 
-        sending_channel = self.logging_channels[deleted_channel.guild.id]
+        sending_channel = self.logging_channels[deleted_guild_id]
 
 
-        final_message = ""
-        final_message += "# Message Purge\n"
-        final_message += f"**Number of messages:** {len(payload)}\n"
-        final_message += f"**Channel:** {deleted_channel}\n"
+        header_content = (f"# Message Purge\n"
+                        + f"**Number of messages:** {len(payload.cached_messages)}\n"
+                        +f"**Purged message link:** https://discord.com/channels/{deleted_guild_id}/{deleted_channel.id}/{payload.cached_messages[0].id}\n")
 
-        final_message += "\n"
-
-        for msg in payload:
+        purge_message_content = ""
+        
+        for msg_index, msg in enumerate(payload.cached_messages):
             # person: message [with no code formatting]
-            final_message += f"<@{msg.author.id}>: {msg.content.replace("```", "‵‵‵")}"
-            final_message += "\n"
 
-            if(len(final_message) >= DISCORD_CHARACTER_LIMIT):
-                final_message = final_message[:DISCORD_CHARACTER_LIMIT - 3]
-                final_message += "..."
+            # truncate and sanitize the message content 
+            curr_message_content = msg.content.replace('```', '‵‵‵').replace('`', '‵')
+            if(len(curr_message_content) > EACH_MESSAGE_LIMIT):
+                curr_message_content = curr_message_content[:EACH_MESSAGE_LIMIT - 3]
+                curr_message_content += "..."
+
+            curr_message = (f"<@{msg.author.id}> `{curr_message_content}`\n")
+
+            # if we're above the character limit, we should truncate the last message.
+            if(len(header_content) 
+                        + len(purge_message_content) 
+                        + len(curr_message) 
+                    >= DISCORD_CHARACTER_LIMIT):
+
+                header_content += f"Truncated at {msg_index} messages.\n"
+
+                curr_message_limit = DISCORD_CHARACTER_LIMIT - len(purge_message_content) - len(header_content)
+                
+                curr_message = curr_message[:curr_message_limit - 6]
+                curr_message += "...`"
+
+                purge_message_content += curr_message
                 break
+            else:
+                purge_message_content += curr_message
 
+        final_message = header_content + purge_message_content
 
-        await sending_channel.send(
-            content=final_message   
-            )
-        '''
+        await sending_channel.send(content=final_message)
 
 
 
