@@ -1,10 +1,10 @@
+from discord import Interaction, app_commands
 from discord.ext import commands
-from discord import app_commands, Interaction
+
 from core.config import BotConfig
 from utils import env
 
-
-VALID_CONFIG_ROLES = ['Staff', 'Admin']
+VALID_CONFIG_ROLES = ["Staff", "Admin"]
 
 
 class ConfigData(commands.Cog):
@@ -15,7 +15,7 @@ class ConfigData(commands.Cog):
         self.bot = bot
         if bot_config:
             self._config_data = bot_config
-        print('Config Data COG added!')
+        print("Config Data COG added!")
 
     def _build_config_string(self) -> str:
         """
@@ -34,7 +34,7 @@ class ConfigData(commands.Cog):
         store_data = self._config_data.get_store_json()
         config_data = f"""
         \r```markdown
-        \rYoutube announcement channels: {", ".join(store_data.get('youtube_announcement_channels', []))} 
+        \rYoutube announcement channels: {", ".join(store_data.get('youtube_announcement_channels', []))}
         \rVOD count: {store_data.get('vod_count', 0)}
         \rYoutube text channel ID: {store_data.get('yt_text_channel_id', '')}
         \rTwitch announcement channels: {",".join([k for k in store_data.get('twitch_announcement_channels', {})])}
@@ -44,7 +44,7 @@ class ConfigData(commands.Cog):
 
         return config_data
 
-    @app_commands.command(name='get-config-data', description='Command for retrieving CAS Bot commands')
+    @app_commands.command(name="get-config-data", description="Command for retrieving CAS Bot commands")
     @app_commands.checks.has_any_role(*VALID_CONFIG_ROLES)
     @app_commands.guilds(env.get_guild_id())
     @app_commands.guild_only()

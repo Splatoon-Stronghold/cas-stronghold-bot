@@ -1,8 +1,10 @@
 from __future__ import annotations
-import attr
+
 import json
 from pathlib import Path
-from typing import List, Dict, Any, Union
+from typing import Any, Dict, List, Union
+
+import attr
 
 
 @attr.s(auto_attribs=True)
@@ -18,12 +20,12 @@ class BasePlatformConfig(attr.AttrsInstance):
 
 @attr.s(auto_attribs=True)
 class YoutubePlatformConfig(BasePlatformConfig):
-    _platform_name = 'Youtube'
+    _platform_name = "Youtube"
 
 
 @attr.s(auto_attribs=True)
 class TwitchPlatformConfig(BasePlatformConfig):
-    _platform_name = 'Twitch'
+    _platform_name = "Twitch"
     # The platforms should have same data structure
     announcement_channels: Dict[str, Any] = None
 
@@ -43,31 +45,29 @@ class BotConfig(attr.AttrsInstance):
 
     @classmethod
     def factory(
-            cls,
-            vod_count: int,
-            youtube_text_channel_id: int,
-            youtube_channels: List[str] = None,
-            twitch_channels: Dict[str, Any] = None,
-            publish_channels: List[str] = None,
-            twitch_text_channel_id: int = None,
-            publish_text_channel_id: int = None
+        cls,
+        vod_count: int,
+        youtube_text_channel_id: int,
+        youtube_channels: List[str] = None,
+        twitch_channels: Dict[str, Any] = None,
+        publish_channels: List[str] = None,
+        twitch_text_channel_id: int = None,
+        publish_text_channel_id: int = None,
     ) -> BotConfig:
         bot_config = cls(
             youtube=YoutubePlatformConfig(
-                announcement_channels=youtube_channels,
-                vod_count=vod_count,
-                text_channel_id=youtube_text_channel_id
+                announcement_channels=youtube_channels, vod_count=vod_count, text_channel_id=youtube_text_channel_id
             ),
             twitch=TwitchPlatformConfig(
                 announcement_channels=twitch_channels,
                 # vod_count=0,  # Once we have this value we can uncomment this
-                text_channel_id=twitch_text_channel_id
+                text_channel_id=twitch_text_channel_id,
             ),
             publish=PublishPlatformConfig(
                 announcement_channels=publish_channels,
                 # vod_count=0,  # Once we have this value we can uncomment this
-                text_channel_id=publish_text_channel_id
-            )
+                text_channel_id=publish_text_channel_id,
+            ),
         )
 
         return bot_config
@@ -81,7 +81,7 @@ class BotConfig(attr.AttrsInstance):
             "vod_count": self.youtube.vod_count,
             "yt_text_channel_id": self.youtube.text_channel_id,
             "twitch_announcement_channels": self.twitch.announcement_channels,
-            "publish_announcement_channels": self.publish.announcement_channels
+            "publish_announcement_channels": self.publish.announcement_channels,
         }
 
 
@@ -105,7 +105,7 @@ def generate_bot_config(config_data: Dict[str, Any] = None) -> BotConfig:
         vod_count=vod_count,
         youtube_text_channel_id=youtube_text_channel_id,
         twitch_text_channel_id=twitch_text_channel_id,
-        publish_text_channel_id=publish_text_channel_id
+        publish_text_channel_id=publish_text_channel_id,
     )
 
 
@@ -114,17 +114,10 @@ def load_bot_config_from_file(file_path: Union[str | Path]) -> BotConfig:
     This function will read a JSON file from path (relative or absolute)
     and return a pre-filled BotConfig instance
     """
-    return generate_bot_config(
-        json.load(
-            open(file_path, encoding='utf-8')
-        )
-    )
+    return generate_bot_config(json.load(open(file_path, encoding="utf-8")))
 
 
-def get_bot_config(
-        file_path: Union[str | Path] = None,
-        config_data: Union[Dict[str, Any] | None] = None
-) -> BotConfig:
+def get_bot_config(file_path: Union[str | Path] = None, config_data: Union[Dict[str, Any] | None] = None) -> BotConfig:
     """
     This function encapsulates the whole BotConfig retrieving
 

@@ -10,6 +10,5 @@ venv
 
 time.json
 config_data.json
-
 .DS_Store
 .idea

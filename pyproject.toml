@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "cas-stronghold-bot"
+version = "0.1.0"
+description = "Stronghold's general purpose bot packaged with various features to help in Discord server tasks and the automation of other services."
+authors = ["Splatoon Stronghold <splatoonstronghold@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/Splatoon-Stronghold/cas-stronghold-bot"
+repository = "https://github.com/Splatoon-Stronghold/cas-stronghold-bot"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12.0"
+"discord.py" = "^2.2.3"
+google-api-python-client = "^2.91.0"
+moviepy = "^1.0.3"
+python-dotenv = "^1.0.0"
+pytube = "^15.0.0"
+requests = "^2.31.0"
+simple-youtube-api = "^0.2.8"
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+black = "^22.12.0"
+flake8 = "^6.0.0"
+flake8-annotations = "^2.6.2"
+flake8-bugbear = "^22.1.11"
+flake8-docstrings = "^1.6.0"
+flake8-isort = "^6.0.0"
+flake8-string-format = "^0.3.0"
+flake8-todo = "^0.7"
+pep8-naming = "^0.13.3"
+pre-commit = "^2.13.0"
+taskipy = "^1.8.1"
+ipykernel = "^6.29.5"
+ipython = "^8.26.0"
+jupyter_client = "^8.6.2"
+jupyter_core = "^5.7.2"
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.black]
+line-length = 120
+
+[tool.taskipy.tasks]
+bot = { cmd = "python main.py", help = "Runs the bot" }
+lint-fix = { cmd = "pre-commit run --all-files", help = "Lints and fixes all project files (i.e. runs the pre-commit hooks)" }
+format = { cmd = "black --target-version py311 .", help = "Runs the black python formatter" }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
