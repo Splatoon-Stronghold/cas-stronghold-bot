@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install poetry
+          pip install poetry flake8
           poetry install
 
       # We will not run `black` or `flake8` here, as we will use a separate
