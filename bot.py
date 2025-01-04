@@ -1,4 +1,3 @@
-import os
 import sys
 
 import discord
@@ -17,15 +16,6 @@ from core.config import get_bot_config
 # from cogs.yt_listen import YtListener
 from utils import env
 from utils.start_time import save_start_time
-
-
-def run_discord_bot() -> None:
-    """
-    Runs the Discord bot process.
-
-    All the logig will be living here
-    """
-    guild_id = env.get_guild_id()
 
 
 def get_guild(bot_ins):

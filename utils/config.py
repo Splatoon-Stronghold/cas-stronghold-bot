@@ -1,12 +1,12 @@
 import json
+import os
+from pathlib import Path
+from typing import List, Union
 
 from core.config import get_bot_config
 from utils import env
 
 config_data = get_bot_config(file_path=env.get_bot_config_path()).get_store_json()
-import os
-from pathlib import Path
-from typing import List, Union
 
 
 def get_config(key: str) -> Union[str, list]:
