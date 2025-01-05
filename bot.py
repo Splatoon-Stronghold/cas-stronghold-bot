@@ -4,7 +4,9 @@ import discord
 from discord import Guild
 from discord.ext import commands
 
+from cogs.config_display import ConfigDisplay
 from cogs.logging import Logging
+from cogs.moderation import Moderation
 from cogs.publish import Publish
 from cogs.server_info import ServerInfo
 from cogs.twitch_config import TwitchConfig
@@ -48,6 +50,8 @@ def run_discord_bot() -> None:
         await bot.add_cog(Uptime(bot))
         await bot.add_cog(ServerInfo(bot))
         await bot.add_cog(Logging(bot))
+        await bot.add_cog(Moderation(bot))
+        await bot.add_cog(ConfigDisplay(bot))
 
         all_guild_commands = bot.tree.get_commands(guild=my_guild)
         all_global_commands = bot.tree.get_commands(guild=None)
