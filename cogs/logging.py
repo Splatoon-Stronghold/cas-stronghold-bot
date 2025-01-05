@@ -147,6 +147,11 @@ class Logging(commands.Cog):
 
         Message logging when message is edited.
         """
+        # Added this bc when the bot needs to defer a response I believe it triggers edit.
+        # But doesn't have a guild attached to the message
+        if before.author.bot:
+            return
+
         guild_id = before.guild.id
         channel = self.logging_channels[guild_id]
 
