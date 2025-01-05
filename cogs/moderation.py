@@ -183,7 +183,7 @@ class Moderation(commands.Cog):
             await interaction.channel.purge(limit=count, reason=log_reason, check=check_not_cmd, bulk=True)
             await interaction.followup.send(f"Success: {count} messages purged for {reason}.", ephemeral=True)
 
-            # await self.reason_log('purge', interaction.guild, interaction.user, reason, count=count)
+            await self.reason_log("purge", interaction.guild, interaction.user, reason, count=count)
         except Exception as e:
             print(e)
             await interaction.followup.send(
