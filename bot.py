@@ -36,16 +36,16 @@ def run_discord_bot():
     intents.moderation = True  # for logging
     intents.members = True  # for logging
     bot = commands.Bot(command_prefix="!", intents=intents)
-    _my_guild = get_guild(bot)
-
-    bot = commands.Bot(command_prefix="!", intents=intents)
+    _my_guild = None
     my_guild = None
+    print(f"Before ready: guild set to none: {_my_guild and my_guild}")
 
     # Message when running
     @bot.event
     async def on_ready() -> None:
-        my_guild = _my_guild
-        print(f"{bot.user} is now running in {my_guild}")
+        my_guild = get_guild(bot)
+        _my_guild = my_guild
+        print(f"{bot.user} is now running in {my_guild}, {_my_guild}")
 
         bot.tree.clear_commands(guild=my_guild)
 
@@ -71,7 +71,7 @@ def run_discord_bot():
         print(f"Synced {len(set_up_commands)} guild command(s) to Discord")
 
         save_start_time()  # for /uptime
-
+        # FIXME: This functionality can be dangerous, consider limiting logic
         for guild in bot.guilds:
             if guild != my_guild:
                 print("Not my guild!")
@@ -79,6 +79,7 @@ def run_discord_bot():
 
     @bot.event
     async def on_guild_join(guild: Guild) -> None:
+        # FIXME: This functionality can be dangerous, consider limiting logic
         if guild != my_guild:
             print("Not my guild!")
             await guild.leave()

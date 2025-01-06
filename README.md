@@ -6,7 +6,7 @@
 Define the environment variables used in [`utils/env.py`](./utils/env.py) in your environment or `.env` (`.env` takes priority):
 ```ini
 # For loading config file, not required
-BOT_CONFIG_PATH=...
+BOT_CONFIG_PATH=config_data.json
 
 # Discord
 DISCORD_TOKEN=...
@@ -24,6 +24,10 @@ YT_CHANNEL_ID=...
 # Logging Channel
 LOGGING_CHANNEL_NAME=...
 ```
+
+#### Setting up your own bot application
+
+Follow instructions in [BOT_INSTALLATION.md](BOT_INSTALLATION.md)
 
 #### Configuration files
 
