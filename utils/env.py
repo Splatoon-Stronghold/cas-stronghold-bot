@@ -1,12 +1,13 @@
 import os
 import sys
+from typing import Union
 
 import dotenv
 
 dotenv.load_dotenv()
 
 
-def get_env_var(name: str) -> str:
+def get_env_var(name: str, nullable_variable: bool = False) -> Union[str, None]:
     """
     get_env_var.
 
@@ -14,14 +15,18 @@ def get_env_var(name: str) -> str:
     ----------
     name : str
         The name of the environment variable to access.
+    nullable_variable : bool
+        Boolean for allowing null variables
     Returns
     -------
-    value : str
+    value : str | None
         The value of the environment variable.
+        If nullable_variable is True, the value will
+        be None if the environment variable is empty.
     """
     try:
-        value = os.getenv(name)
-        if value is not None:
+        value = os.getenv(name, None)
+        if value is not None or nullable_variable:
             return value
         else:
             print(f"Value of {name} is empty. Exiting")
@@ -42,6 +47,15 @@ def get_discord_token() -> str:
 def get_guild_id() -> int:
     """get_guild_id."""
     return int(get_env_var("GUILD_ID"))
+
+
+def get_force_guild_id() -> Union[int, None]:
+    guild_id = get_env_var("FORCE_GUILD_ID", True)
+    return int(guild_id) if guild_id else None
+
+
+def get_bot_config_path() -> Union[str, None]:
+    return get_env_var("BOT_CONFIG_PATH", True)
 
 
 # Twitch
