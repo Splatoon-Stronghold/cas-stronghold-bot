@@ -5,7 +5,6 @@ from discord import Guild
 from discord.ext import commands
 
 from cogs.config_data import ConfigData
-from cogs.config_display import ConfigDisplay
 from cogs.logging import Logging
 from cogs.moderation import Moderation
 from cogs.publish import Publish
@@ -58,7 +57,6 @@ def run_discord_bot():
         await bot.add_cog(Logging(bot))
         await bot.add_cog(ConfigData(bot, bot_config=get_bot_config(file_path=env.get_bot_config_path())))
         await bot.add_cog(Moderation(bot))
-        await bot.add_cog(ConfigDisplay(bot))
 
         all_guild_commands = bot.tree.get_commands(guild=my_guild)
         all_global_commands = bot.tree.get_commands(guild=None)
