@@ -3,6 +3,11 @@ import os
 from pathlib import Path
 from typing import List, Union
 
+from core.config import get_bot_config
+from utils import env
+
+config_data = get_bot_config(file_path=env.get_bot_config_path()).get_store_json()
+
 
 def get_config(key: str) -> Union[str, list]:
     """
@@ -31,7 +36,7 @@ def get_config(key: str) -> Union[str, list]:
     return data
 
 
-def update_config(key: str, data: Union[str, list]) -> Union[str, list]:
+def update_config(key: str, data: Union[str, list], output_file: str = None) -> Union[str, list]:
     """
     update_config.
 
@@ -41,10 +46,13 @@ def update_config(key: str, data: Union[str, list]) -> Union[str, list]:
         The key to change the desired data from config_data.json
     data : str or list
         The information to replace the current contents of the key in config_data.json
+    output_file: str
+        Path where the dict will be stored
     Returns
     -------
     data : str or list
         The data that was written.
+
     """
     base_path = (Path(os.path.abspath(__file__)) / ".." / "..").resolve()
     config_path = base_path / "config_data.json"

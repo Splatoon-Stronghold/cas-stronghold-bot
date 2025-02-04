@@ -4,7 +4,7 @@ import discord
 from discord import Guild
 from discord.ext import commands
 
-from cogs.config_display import ConfigDisplay
+from cogs.config_data import ConfigData
 from cogs.logging import Logging
 from cogs.moderation import Moderation
 from cogs.publish import Publish
@@ -12,20 +12,22 @@ from cogs.server_info import ServerInfo
 from cogs.twitch_config import TwitchConfig
 from cogs.twitch_listen import TwitchListen
 from cogs.uptime import Uptime
+from core.config import get_bot_config
 
 # from cogs.yt_listen import YtListener
 from utils import env
 from utils.start_time import save_start_time
 
 
-def run_discord_bot() -> None:
-    """
-    Runs the Discord bot process.
+def get_guild(bot_ins):
+    _bot_id = env.get_force_guild_id()
+    my_guild = bot_ins.get_guild(_bot_id)
+    if not my_guild:
+        my_guild = bot_ins.get_guild(env.get_guild_id())
+    return my_guild
 
-    All the logig will be living here
-    """
-    guild_id = env.get_guild_id()
 
+def run_discord_bot():
     # Initializing the intents of the bot
     intents = discord.Intents.default()
     intents.message_content = True  # for publish
@@ -33,13 +35,16 @@ def run_discord_bot() -> None:
     intents.moderation = True  # for logging
     intents.members = True  # for logging
     bot = commands.Bot(command_prefix="!", intents=intents)
+    _my_guild = None
     my_guild = None
+    print(f"Before ready: guild set to none: {_my_guild and my_guild}")
 
     # Message when running
     @bot.event
     async def on_ready() -> None:
-        my_guild = bot.get_guild(guild_id)
-        print(f"{bot.user} is now running in {my_guild}")
+        my_guild = get_guild(bot)
+        _my_guild = my_guild
+        print(f"{bot.user} is now running in {my_guild}, {_my_guild}")
 
         bot.tree.clear_commands(guild=my_guild)
 
@@ -50,8 +55,8 @@ def run_discord_bot() -> None:
         await bot.add_cog(Uptime(bot))
         await bot.add_cog(ServerInfo(bot))
         await bot.add_cog(Logging(bot))
+        await bot.add_cog(ConfigData(bot, bot_config=get_bot_config(file_path=env.get_bot_config_path())))
         await bot.add_cog(Moderation(bot))
-        await bot.add_cog(ConfigDisplay(bot))
 
         all_guild_commands = bot.tree.get_commands(guild=my_guild)
         all_global_commands = bot.tree.get_commands(guild=None)
@@ -64,7 +69,7 @@ def run_discord_bot() -> None:
         print(f"Synced {len(set_up_commands)} guild command(s) to Discord")
 
         save_start_time()  # for /uptime
-
+        # FIXME: This functionality can be dangerous, consider limiting logic
         for guild in bot.guilds:
             if guild != my_guild:
                 print("Not my guild!")
@@ -72,6 +77,7 @@ def run_discord_bot() -> None:
 
     @bot.event
     async def on_guild_join(guild: Guild) -> None:
+        # FIXME: This functionality can be dangerous, consider limiting logic
         if guild != my_guild:
             print("Not my guild!")
             await guild.leave()

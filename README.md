@@ -5,6 +5,9 @@
 #### Environment variables
 Define the environment variables used in [`utils/env.py`](./utils/env.py) in your environment or `.env` (`.env` takes priority):
 ```ini
+# For loading config file, not required
+BOT_CONFIG_PATH=config_data.json
+
 # Discord
 DISCORD_TOKEN=...
 GUILD_ID=...
@@ -21,6 +24,10 @@ YT_CHANNEL_ID=...
 # Logging Channel
 LOGGING_CHANNEL_NAME=...
 ```
+
+#### Setting up your own bot application
+
+Follow instructions in [BOT_INSTALLATION.md](BOT_INSTALLATION.md)
 
 #### Configuration files
 
@@ -45,6 +52,11 @@ Copy [`config_data-example.json`](./config_data-example.json), rename it to `con
   ```
 
 ### Run
+
+For overriding the .env guild you can set FORCE_GUILD_ID value
+```bash
+export FORCE_GUILD_ID="YOUR_TARGET_GUILD_ID"
+```
 
 ```bash
 poetry run task bot
