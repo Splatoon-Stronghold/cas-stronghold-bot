@@ -5,9 +5,11 @@ from discord import Guild
 from discord.ext import commands
 
 from cogs.config_data import ConfigData
+from cogs.config_display import ConfigDisplay
 from cogs.logging import Logging
 from cogs.moderation import Moderation
 from cogs.publish import Publish
+from cogs.roles_management import RoleManager
 from cogs.server_info import ServerInfo
 from cogs.twitch_config import TwitchConfig
 from cogs.twitch_listen import TwitchListen
@@ -19,7 +21,8 @@ from utils import env
 from utils.start_time import save_start_time
 
 
-def get_guild(bot_ins):
+def get_guild(bot_ins: commands.Bot) -> Guild:
+    """Gets the guild for the discord bot."""
     _bot_id = env.get_force_guild_id()
     my_guild = bot_ins.get_guild(_bot_id)
     if not my_guild:
@@ -27,7 +30,8 @@ def get_guild(bot_ins):
     return my_guild
 
 
-def run_discord_bot():
+def run_discord_bot() -> None:
+    """Runs the discord bot."""
     # Initializing the intents of the bot
     intents = discord.Intents.default()
     intents.message_content = True  # for publish
@@ -52,11 +56,13 @@ def run_discord_bot():
         await bot.add_cog(TwitchListen(bot))
         await bot.add_cog(TwitchConfig(bot))
         # await bot.add_cog(YtListener(bot)) --> if you want to use this, uncomment it
+        await bot.add_cog(ConfigDisplay(bot))
         await bot.add_cog(Uptime(bot))
         await bot.add_cog(ServerInfo(bot))
         await bot.add_cog(Logging(bot))
         await bot.add_cog(ConfigData(bot, bot_config=get_bot_config(file_path=env.get_bot_config_path())))
         await bot.add_cog(Moderation(bot))
+        await bot.add_cog(RoleManager(bot))
 
         all_guild_commands = bot.tree.get_commands(guild=my_guild)
         all_global_commands = bot.tree.get_commands(guild=None)

@@ -50,11 +50,13 @@ def get_guild_id() -> int:
 
 
 def get_force_guild_id() -> Union[int, None]:
+    """get_force_guild_id."""
     guild_id = get_env_var("FORCE_GUILD_ID", True)
     return int(guild_id) if guild_id else None
 
 
 def get_bot_config_path() -> Union[str, None]:
+    """get_bot_config_path."""
     return get_env_var("BOT_CONFIG_PATH", True)
 
 
