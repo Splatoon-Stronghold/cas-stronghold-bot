@@ -28,6 +28,16 @@ class ConfigDisplay(commands.Cog):
         yt = get_config("youtube_announcement_channels")
         twitch = get_config("twitch_announcement_channels")
         publish = get_config("publish_announcement_channels")
+
+        # google sheet role management stuff
+
+        gsheet_id = get_config("google_sheet_id")
+        gsheet_sheet_name = get_config("google_sheet_name")
+
+        gsheet_discord_id_col = get_config("google_sheet_discordID_column")
+        gsheet_perm_role_col = get_config("google_sheet_position_role_column")
+        gsheet_team_role_col = get_config("google_sheet_team_role_column")
+
         await interaction.response.send_message(
             f'''```Current Configurations
 Youtube:
@@ -35,5 +45,11 @@ Youtube:
 Twitch:
 - {"\n - ".join(twitch) if twitch else "[not configured]"}
 Auto-Publisher:
-- {"\n - ".join(publish) if publish else "[not configured]"}```'''
+- {"\n - ".join(publish) if publish else "[not configured]"}
+Google Sheet Role Management:
+- ID: {gsheet_id if gsheet_id else "[not configured]"}
+- Sheet Name / Tab: {gsheet_sheet_name if gsheet_sheet_name else "[not configured]"}
+- Discord ID Column (A=1, B=2): {gsheet_discord_id_col + 1 if gsheet_discord_id_col else "[not configured]"}
+- Position Role Column (A=1, B=2): {gsheet_perm_role_col + 1 if gsheet_perm_role_col else "[not configured]"}
+- Team Role Column (A=1, B=2): {gsheet_team_role_col + 1 if gsheet_team_role_col else "[not configured]"}```'''
         )
