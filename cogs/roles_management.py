@@ -10,9 +10,9 @@ class RoleManager(commands.Cog):
     def __init__(self, bot: commands.Bot):
         """Initialize RoleManager cog."""
         self.bot: commands.Bot = bot
-        self.creds = google_auth.get_authentication()
-        self.flow = None
         self.SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+        self.creds = google_auth.get_authentication(self.SCOPES)
+        self.flow = None
         self.id = config.get_config("google_sheet_id")
         self.sheet_name = config.get_config("google_sheet_name")
         self.service = gsheet.get_service(self.creds) if self.creds else None
@@ -60,7 +60,7 @@ class RoleManager(commands.Cog):
         """Authenticate the bot with Google Sheets."""
         response = interaction.response
 
-        creds = google_auth.get_authentication()
+        creds = google_auth.get_authentication(self.SCOPES)
 
         if creds:
             await response.send_message(
@@ -300,7 +300,7 @@ class RoleManager(commands.Cog):
         )
         return
 
-    @tasks.loop(hours=12.0)
+    @tasks.loop(minutes=1.0)
     async def update_roles(self) -> None:
         """Update roles for all users based on the Google Sheet."""
         if not self.service:

@@ -12,7 +12,7 @@ app_creds_path = base_path / "cas-bot-api-gsheet.json"
 auth_path = base_path / "token.json"
 
 
-def get_authentication() -> Credentials | None:
+def get_authentication(scopes: list[str]) -> Credentials | None:
     """
     Gets the authentication if present, otherwise none.
 
@@ -38,7 +38,10 @@ def get_authentication() -> Credentials | None:
         return None
 
     if not creds or not creds.valid:
-        print("Invalid")
+        if not creds.valid:
+            print("Invalid credentials")
+        else:
+            print("No credentials found")
         return None
     else:
         return creds
