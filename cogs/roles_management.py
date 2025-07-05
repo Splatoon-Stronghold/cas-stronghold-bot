@@ -359,7 +359,7 @@ class RoleManager(commands.Cog):
         )
         return
 
-    @tasks.loop(minutes=1.0)
+    @tasks.loop(hours=12.0)
     async def update_roles(self) -> None:
         """Update roles for all users based on the Google Sheet."""
         if not self.service:
