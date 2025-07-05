@@ -16,8 +16,8 @@ class RoleManager(commands.Cog):
         self.id = config.get_config("google_sheet_id")
         self.sheet_name = config.get_config("google_sheet_name")
         self.service = gsheet.get_service(self.creds) if self.creds else None
-        self.perm_guild_ids = [env.get_guild_id()]  # config info
-        self.team_guild_ids = [env.get_guild_id()]  # config info
+        self.perm_guild_ids = config.get_config("position_role_guilds")  # config info
+        self.team_guild_ids = config.get_config("team_role_guilds")  # config info
 
         self.main_guild_id = env.get_guild_id()
 
@@ -248,6 +248,65 @@ class RoleManager(commands.Cog):
             ),
             ephemeral=True,
         )
+
+    @app_commands.command(
+        name="roles-servers-config",
+        description="Configures servers for the role manager. Removes server if present, adds otherwise.",
+    )
+    @app_commands.checks.has_any_role("Admin")
+    @app_commands.guilds(env.get_guild_id())
+    @app_commands.guild_only()
+    @app_commands.describe(
+        position_guild_name="The name of the server to add / remove for position roles (staff, helper, etc)",
+        team_guild_name="The name of the server to add / remove for the team roles (tech, production, etc)",
+    )
+    async def roles_servers_config(
+        self,
+        interaction: Interaction,
+        position_guild_name: str = "",
+        team_guild_name: str = "",
+    ) -> None:
+        """Configures the servers on which the bot should operate."""
+        msg = ""
+        guild_names = {g.name.lower(): g.id for g in self.bot.guilds}
+        if position_guild_name:
+            if position_guild_name.lower() not in guild_names:
+                msg += "Position server could not be found - please ensure spelling is correct. "
+                msg += f"Name: {position_guild_name}"
+            else:
+                try:
+                    id = guild_names[position_guild_name.lower()]
+                    self.bot.get_guild(id)
+                    if id not in self.perm_guild_ids:
+                        self.perm_guild_ids.append(id)
+                        msg += f"Added server to position role servers. ID: {id}\n"
+                    else:
+                        self.perm_guild_ids.remove(id)
+                        msg += f"Removed server from position role servers. ID: {id}\n"
+                except Exception:
+                    msg += f"Error - could not find position server. ID: {id}.\n"
+
+        if team_guild_name:
+            if team_guild_name.lower() not in guild_names:
+                msg += f"Team server could not be found - please ensure spelling is correct. Name: {team_guild_name}"
+            else:
+                try:
+                    id = guild_names[team_guild_name.lower()]
+                    self.bot.get_guild(id)
+                    if id not in self.team_guild_ids:
+                        self.team_guild_ids.append(id)
+                        msg += f"Added server to team role servers. ID: {id}\n"
+                    else:
+                        self.team_guild_ids.remove(id)
+                        msg += f"Removed server from team role servers. ID: {id}\n"
+                except Exception:
+                    msg += f"Error - could not find team server. ID: {id}.\n"
+        # update config info
+        config.update_config("position_role_guilds", self.perm_guild_ids)
+        config.update_config("team_role_guilds", self.team_guild_ids)
+        if not msg:
+            msg = "Please enter at least one server name."
+        await interaction.response.send_message(content=msg, ephemeral=True)
 
     @app_commands.command(
         name="roles-reset",
