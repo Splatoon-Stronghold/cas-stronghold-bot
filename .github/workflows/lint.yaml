@@ -27,7 +27,8 @@ jobs:
       # that is a composite of those states.
       # Only when the context is exactly the same, we will restore the cache.
       - name: Restore pip cache
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # 4.0.2
+        uses: actions/cache@v4 # attempted change
+        # uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # 4.0.2
         with:
           path: ${{ env.PIP_CACHE_DIR }}
           key: "python-0-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('./pyproject.toml', './poetry.lock') }}"
