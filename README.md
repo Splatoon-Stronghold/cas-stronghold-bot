@@ -35,6 +35,10 @@ Copy [`config_data-example.json`](./config_data-example.json), rename it to `con
 
 `time.json` will be created automatically when the bot starts.
 
+#### Google Configuration
+
+In order to use the Google Sheet role service, a GoogleOAuth Client is needed. Make sure that the needed services are not restricted when making the Auth Client on the google cloud platform. The client should be a desktop client. Download the client-secret json file, and rename it to `cas-bot-api-gsheet.json`. See this [google developer page](https://developers.google.com/workspace/sheets/api/quickstart/python#install_the_google_client_library) (the section about setting up your environment) for more info about the client creation process.
+
 ### Prepare & install dependencies
 
 1. [Install `pipx`](https://pipx.pypa.io/stable/installation/).
